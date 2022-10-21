@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "Leetcode rooms",
+  "version": "1.0",
+  "description": "RIP binarysearch",
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js", "scripts/socket.io.2.js"],
+      "matches": [
+        "https://leetcode.com/problems/*"
+      ]
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  }
+}

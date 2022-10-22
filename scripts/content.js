@@ -109,7 +109,7 @@ const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75
 let questions = [];
 
 function addMessage(data) {
-  let user = data.user;
+  let user = data.name;
   let message = data.message;
   let type = data.type;
   let newChat;

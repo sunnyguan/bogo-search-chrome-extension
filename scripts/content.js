@@ -108,6 +108,21 @@ const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75
 
 let questions = [];
 
+function addMessage(data) {
+  let user = data.user;
+  let message = data.message;
+  let type = data.type;
+  let newChat;
+  if (type === "submission") {
+    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
+  } else if (type === "chat") {
+    newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`)
+  } else if (type === "admin") {
+    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Admin</b>: ${message} </p>`);
+  }
+  document.querySelector("#chats").appendChild(newChat);
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.type === "players") {
@@ -138,25 +153,11 @@ chrome.runtime.onMessage.addListener(
           window.location.href = request.data[0][1];
         }
       } else if (request.type === "message") {
-        let user = request.data.user;
-        let message = request.data.message;
-        let type = request.data.type;
-        let newChat;
-        console.log(request);
-        console.log(request.data.type);
-        if (type === "submission") {
-          newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
-        } else if (type === "chat") {
-          newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`)
-        } else if (type === "admin") {
-          newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Admin</b>: ${message} </p>`);
-        }
-        document.querySelector("#chats").appendChild(newChat);
+        addMessage(request.data);
       } else if (request.type === "chatlog") {
         document.querySelector("#chats").innerHTML = "";
         for (const chat of request.data) {
-          let newChat = createElementFromHTML(`<p style='${chatStyle}'>${chat.user}: ${chat.message}</p>`);
-          document.querySelector("#chats").appendChild(newChat);
+          addMessage(chat);
         }
       }
     }

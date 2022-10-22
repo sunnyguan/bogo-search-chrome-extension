@@ -14,5 +14,11 @@
   "background": {
     "service_worker": "background.js",
     "type": "module"
-  }
+  },
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://*.leetcode.com/"
+  ]
 }

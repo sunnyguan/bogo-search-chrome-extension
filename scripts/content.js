@@ -144,11 +144,14 @@ chrome.runtime.onMessage.addListener(
         let newChat;
         if (type === "submission") {
           newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
-        } else {
+        } else if (type === "chat") {
           newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`)
+        } else if (type === "admin") {
+          newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Admin</b>: ${message} </p>`);
         }
         document.querySelector("#chats").appendChild(newChat);
       } else if (request.type === "chatlog") {
+        document.querySelector("#chats").innerHTML = "";
         for (const chat of request.data) {
           let newChat = createElementFromHTML(`<p style='${chatStyle}'>${chat.user}: ${chat.message}</p>`);
           document.querySelector("#chats").appendChild(newChat);

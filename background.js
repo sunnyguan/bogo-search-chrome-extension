@@ -3,7 +3,7 @@ import './scripts/socket.io.2.js';
 let socket = io("https://3a9f-153-33-85-75.ngrok.io/", {jsonp: false});
 
 function sendMsg(data) {
-  chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+  chrome.tabs.query({url: "https://*.leetcode.com/*"}, function(tabs) {
     chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
       console.log(response);
     });
@@ -29,7 +29,8 @@ socket.on("room_info", function(room_info) {
   sendMsg({type: "room_num", data: room_info.room_id});
   sendMsg({type: "players", data: room_info.players});
   sendMsg({type: "questions", data: room_info.questions});
-  sendMsg({type: "chatlog", data: room_info.chatlog});
+  if ("chatlog" in room_info)
+    sendMsg({type: "chatlog", data: room_info.chatlog});
 });
 
 socket.on("message", function(data) {

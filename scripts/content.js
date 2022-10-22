@@ -49,7 +49,7 @@ function leaveRoom() {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if (request.type === "room_size") {
+      if (request.type === "players") {
         console.log("Room size", request.data);
         // document.querySelector("#join-room").style.display = 'none';
         document.querySelector('#room-size').textContent = "Room size: " + request.data;

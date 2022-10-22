@@ -61,7 +61,7 @@ function inputEnterMsg(e) {
   }
 }
 
-const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem;';
+const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -144,6 +144,8 @@ const sidebar = `
     flex-direction: column;
 "><div id="chats" style="
     flex-grow: 1;
+    height: 0;
+    overflow-y: scroll;
 ">
 </div><div style="
     display: flex;

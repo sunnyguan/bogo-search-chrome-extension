@@ -4,7 +4,7 @@ let socket = io("https://3a9f-153-33-85-75.ngrok.io/", {jsonp: false});
 
 function sendMsg(data) {
   console.log(data)
-  chrome.tabs.query({url: "https://*.leetcode.com/*"}, function(tabs) {
+  chrome.tabs.query({url: "https://*.leetcode.com/*", currentWindow: true}, function(tabs) {
     console.log(tabs);
     chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
       console.log(response);

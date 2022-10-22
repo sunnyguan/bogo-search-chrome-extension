@@ -95,7 +95,7 @@ const sidebar = `
 <div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
   Not in room yet
 </div></div>
-<div id="room-size" style="margin: auto 10px auto 10px">
+<div id="room-size" style="">
 </div>
 <div id="questions">
 </div>

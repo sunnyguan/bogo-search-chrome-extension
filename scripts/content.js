@@ -84,6 +84,8 @@ chrome.runtime.onMessage.addListener(
         let user = request.data.user;
         let message = request.data.message;
         console.log("GOT MESSAGE FROM " + user + ": " + message);
+        let newChat = createElementFromHTML("<p>" + user + ": " + message + "</p>");
+        document.querySelector("#chats").appendChild(newChat);
       }
     }
 );
@@ -126,9 +128,11 @@ const sidebar = `
     background: #eeeeee;
     display: flex;
     flex-direction: column;
-"><div style="
+"><div id="chats" style="
     flex-grow: 1;
-">FAKE</div><div style="
+">
+<p>Chatlog</p>
+</div><div style="
     display: flex;
 "><input type="text" id="chatbox" style="
     flex-grow: 1;

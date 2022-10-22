@@ -51,38 +51,77 @@ chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.type === "room_size") {
         console.log("Room size", request.data);
+        // document.querySelector("#join-room").style.display = 'none';
         document.querySelector('#room-size').textContent = "Room size: " + request.data;
       } else if (request.type === "room_num") {
         console.log("Room number", request.data);
         document.querySelector('#room-id').textContent = "Room id: " + request.data;
+      } else if (request.type === "questions") {
+        console.log("LC Questions", request.data);
+        let questions = "<p>List of questions:</p>";
+        let currentQuestionExists = false;
+        for (let question of request.data) {
+          questions += "<p>" + question + "</p>"
+          if (question.replace('www.', '') === window.location.href)
+            currentQuestionExists = true;
+        }
+        document.querySelector('#questions').innerHTML = questions;
+
+        if (!currentQuestionExists) {
+          console.log("about to redirect");
+          console.log(request.data);
+          console.log(window.location.href);
+          window.location.href = request.data[0];
+        }
       }
-      sendResponse({farewell: "goodbye"});
     }
 );
 
-const sidebar = `<div style="">
-<div id="room-id" style="margin: auto 10px auto 10px">
+const sidebar = `
+<div style="display: flex;flex-direction: column;">
+    <div style="
+    background: #fafafa;
+    padding: 10px;
+">Rooms</div>
+    <div style="
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    flex-grow: 1;
+"><div style="
+    padding: 10px;
+">
+<div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
   Not in room yet
-</div>
+</div></div>
 <div id="room-size" style="margin: auto 10px auto 10px">
 </div>
-<button id="create-room" class="btn__1z2C btn-sm__2msL" data-no-border="true"
-        icon="information">
-        Create Room
-</button>
-<div style="display: flex">
-  <input type="text" id="join-room-id" />
-  <button id="join-room" class="btn__1z2C btn-sm__2msL" data-no-border="true"
-          icon="information">
-          Join Room
-  </button>
+<div id="questions">
 </div>
 <div style="display: flex">
-  <button id="leave-room" class="btn__1z2C btn-sm__2msL" data-no-border="true"
-          icon="information">
+  <input type="text" id="join-room-id">
+  <button id="join-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information">
+          Join Room
+  </button>
+</div><button id="create-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information" style="
+    width: 100%;
+">
+        Create Room
+</button></div>
+<div style="
+    flex-grow: 1;
+    padding: 10px;
+    background: #eeeeee;
+">Content</div>
+<div style="display: flex;">
+  <button id="leave-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information" style="
+    flex-grow: 1;
+">
           Leave Room
   </button>
 </div>
+    </div>
 </div>`
 
 let username = "user" + Math.round(Math.random() * 100);
@@ -97,9 +136,14 @@ function myMain (e) {
   side.querySelector("#leave-room").addEventListener('click', leaveRoom);
   parent.appendChild(side);
 
-  window.onbeforeunload = function(e) {
-    leaveRoom();
-  }
+  // window.onbeforeunload = function(e) {
+  //   leaveRoom();
+  // }
 
-  username = document.querySelector(".user-name__35Mk").textContent;
+  // username = document.querySelector(".user-name__35Mk").textContent;
+
+  // retrieve current room info
+  chrome.runtime.sendMessage({type: "retrieve_room_info"}, function(response) {
+    console.log(response);
+  });
 }

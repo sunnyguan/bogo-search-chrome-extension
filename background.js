@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("https://a096-153-33-85-75.ngrok.io/", {jsonp: false});
+let socket = io("https://875f-153-33-85-75.ngrok.io/", {jsonp: false});
 
 function sendMsg(data) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
@@ -20,8 +20,20 @@ socket.on('current_players', function(player) {
   sendMsg({type: "room_size", data: player});
 })
 
+socket.on("list_of_leetcode_questions", function(questions) {
+  sendMsg({type: "questions", data: questions});
+});
+
+socket.on("room_info", function(room_info) {
+  console.log(room_info)
+  sendMsg({type: "room_num", data: room_info.room_id});
+  sendMsg({type: "players", data: room_info.players});
+  sendMsg({type: "questions", data: room_info.questions});
+});
+
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse) {
+      console.log(req)
       if (req.type === "create") {
         socket.emit("create_room", {name: req.name});
         sendResponse({status: 200});
@@ -31,6 +43,9 @@ chrome.runtime.onMessage.addListener(
       } else if (req.type === "leave") {
         socket.emit("leave_room");
         sendResponse({status: 202});
+      } else if (req.type === "retrieve_room_info") {
+        socket.emit("retrieve_room_info");
+        sendResponse({status: 203});
       }
     }
 );

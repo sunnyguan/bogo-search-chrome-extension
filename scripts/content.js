@@ -143,6 +143,7 @@ chrome.runtime.onMessage.addListener(
         let type = request.data.type;
         let newChat;
         console.log(request);
+        console.log(request.data.type);
         if (type === "submission") {
           newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
         } else if (type === "chat") {

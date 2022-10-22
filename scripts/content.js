@@ -54,6 +54,8 @@ function sendMsg() {
   });
 }
 
+const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem;';
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.type === "players") {
@@ -84,7 +86,7 @@ chrome.runtime.onMessage.addListener(
         let user = request.data.user;
         let message = request.data.message;
         console.log("GOT MESSAGE FROM " + user + ": " + message);
-        let newChat = createElementFromHTML("<p>" + user + ": " + message + "</p>");
+        let newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`);
         document.querySelector("#chats").appendChild(newChat);
       }
     }
@@ -131,7 +133,6 @@ const sidebar = `
 "><div id="chats" style="
     flex-grow: 1;
 ">
-<p>Chatlog</p>
 </div><div style="
     display: flex;
 "><input type="text" id="chatbox" style="

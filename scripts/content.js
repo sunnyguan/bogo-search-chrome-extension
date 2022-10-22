@@ -82,7 +82,31 @@ function inputEnterMsg(e) {
   }
 }
 
+function currentQuestionId() {
+  let i = 0;
+  for (const question of questions) {
+    if (question[1].replace('www.', '') === window.location.href)
+      return i;
+    i++;
+  }
+  return -1;
+}
+
+function prevQuestion() {
+  const currId = currentQuestionId();
+  if (currId !== 0 && currId !== -1)
+    window.location.href = questions[currId - 1][1];
+}
+
+function nextQuestion() {
+  const currId = currentQuestionId();
+  if (currId !== questions.length - 1 && currId !== -1)
+    window.location.href = questions[currId + 1][1];
+}
+
 const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
+
+let questions = [];
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
@@ -94,21 +118,24 @@ chrome.runtime.onMessage.addListener(
         console.log("Room number", request.data);
         document.querySelector('#room-id').textContent = "Room id: " + request.data;
       } else if (request.type === "questions") {
+        questions = request.data;
         console.log("LC Questions", request.data);
-        let questions = "<p>List of questions:</p>";
+        let question_str = "<p>List of questions:</p>";
         let currentQuestionExists = false;
         for (let question of request.data) {
-          questions += "<p>" + question + "</p>"
-          if (question.replace('www.', '') === window.location.href)
+          let question_name = question[0];
+          let question_url = question[1];
+          question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
+          if (question_url.replace('www.', '') === window.location.href)
             currentQuestionExists = true;
         }
-        document.querySelector('#questions').innerHTML = questions;
+        document.querySelector('#questions').innerHTML = question_str;
 
         if (!currentQuestionExists) {
           console.log("about to redirect");
           console.log(request.data);
           console.log(window.location.href);
-          window.location.href = request.data[0];
+          window.location.href = request.data[0][1];
         }
       } else if (request.type === "message") {
         let user = request.data.user;
@@ -191,6 +218,27 @@ const sidebar = `
     </div>
 </div>`
 
+function makePrevNextButton() {
+  const question_name = document.querySelector('.css-v3d350').textContent;
+   document.querySelector('.css-v3d350').innerHTML = `
+<div style="
+    flex-grow: 1;
+">${question_name}</div><div style="
+    display: flex;
+"><div id="question-prev" style="
+    padding: 0 8px 0 8px;
+    background: lightblue;
+    margin: auto 5px auto 5px;
+    border-radius: 0.75rem;
+"><</div><div id="question-next" style="
+    padding: 0 8px 0 8px;
+    background: lightblue;
+    margin: auto 5px auto 5px;
+    border-radius: 0.75rem;
+">></div></div>`;
+  document.querySelector('.css-v3d350').style.display = 'flex';
+}
+
 let username = "user" + Math.round(Math.random() * 100);
 
 waitForElm('.btns__1OeZ').then((res) => {myMain(res)});
@@ -205,6 +253,11 @@ function myMain (e) {
 
   document.querySelector("#sendMsg").addEventListener('click', sendMsg);
   document.querySelector("#chatbox").addEventListener('keypress', inputEnterMsg);
+
+  makePrevNextButton();
+  document.querySelector("#question-prev").addEventListener('click', prevQuestion);
+  document.querySelector("#question-next").addEventListener('click', nextQuestion);
+
 
   // window.onbeforeunload = function(e) {
   //   leaveRoom();

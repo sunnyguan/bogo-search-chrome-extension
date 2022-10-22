@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("https://592e-153-33-85-75.ngrok.io/", {jsonp: false});
+let socket = io("https://3a9f-153-33-85-75.ngrok.io/", {jsonp: false});
 
 function sendMsg(data) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {

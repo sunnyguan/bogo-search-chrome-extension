@@ -47,6 +47,13 @@ function leaveRoom() {
   });
 }
 
+function sendMsg() {
+  let msg = document.querySelector("#chatbox").value;
+  chrome.runtime.sendMessage({type: "message", msg: msg}, function(response) {
+    console.log(response);
+  });
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.type === "players") {
@@ -73,6 +80,10 @@ chrome.runtime.onMessage.addListener(
           console.log(window.location.href);
           window.location.href = request.data[0];
         }
+      } else if (request.type === "message") {
+        let user = request.data.user;
+        let message = request.data.message;
+        console.log("GOT MESSAGE FROM " + user + ": " + message);
       }
     }
 );
@@ -113,7 +124,18 @@ const sidebar = `
     flex-grow: 1;
     padding: 10px;
     background: #eeeeee;
-">Content</div>
+    display: flex;
+    flex-direction: column;
+"><div style="
+    flex-grow: 1;
+">FAKE</div><div style="
+    display: flex;
+"><input type="text" id="chatbox" style="
+    flex-grow: 1;
+"><div id="sendMsg" style="
+    margin-left: 10px;
+">Send</div></div>
+</div>
 <div style="display: flex;">
   <button id="leave-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information" style="
     flex-grow: 1;
@@ -135,6 +157,8 @@ function myMain (e) {
   side.querySelector("#join-room").addEventListener('click', joinRoom);
   side.querySelector("#leave-room").addEventListener('click', leaveRoom);
   parent.appendChild(side);
+
+  document.querySelector("#sendMsg").addEventListener('click', sendMsg);
 
   // window.onbeforeunload = function(e) {
   //   leaveRoom();

@@ -31,6 +31,10 @@ socket.on("room_info", function(room_info) {
   sendMsg({type: "questions", data: room_info.questions});
 });
 
+socket.on("message", function(data) {
+  sendMsg({type: "message", data: data});
+});
+
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse) {
       console.log(req)
@@ -46,6 +50,9 @@ chrome.runtime.onMessage.addListener(
       } else if (req.type === "retrieve_room_info") {
         socket.emit("retrieve_room_info");
         sendResponse({status: 203});
+      } else if (req.type === "message") {
+        socket.emit("message", req.msg);
+        sendResponse({status: 204});
       }
     }
 );

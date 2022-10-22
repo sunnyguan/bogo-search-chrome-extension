@@ -54,6 +54,13 @@ function sendMsg() {
   });
 }
 
+function inputEnterMsg(e) {
+  if (e.key == "Enter") {
+    sendMsg();
+    document.querySelector("#chatbox").value = "";
+  }
+}
+
 const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem;';
 
 chrome.runtime.onMessage.addListener(
@@ -164,6 +171,7 @@ function myMain (e) {
   parent.appendChild(side);
 
   document.querySelector("#sendMsg").addEventListener('click', sendMsg);
+  document.querySelector("#chatbox").addEventListener('keypress', inputEnterMsg);
 
   // window.onbeforeunload = function(e) {
   //   leaveRoom();

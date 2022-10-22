@@ -38,22 +38,12 @@ socket.on("message", function(data) {
 
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse) {
-      console.log(req)
-      if (req.type === "create") {
-        socket.emit("create_room", {name: req.name});
-        sendResponse({status: 200});
-      } else if (req.type === "join") {
-        socket.emit("join_room", req.room, {name: req.name});
-        sendResponse({status: 201});
-      } else if (req.type === "leave") {
-        socket.emit("leave_room");
-        sendResponse({status: 202});
-      } else if (req.type === "retrieve_room_info") {
-        socket.emit("retrieve_room_info");
-        sendResponse({status: 203});
-      } else if (req.type === "message") {
-        socket.emit("message", req.msg);
-        sendResponse({status: 204});
+      console.log(req);
+      if ('data' in req) {
+        socket.emit(req.type, req.data);
+      } else {
+        socket.emit(req.type);
       }
+      sendResponse({status: 200});
     }
 );

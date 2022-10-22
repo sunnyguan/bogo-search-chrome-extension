@@ -18,6 +18,27 @@ function waitForElm(selector) {
   });
 }
 
+
+function waitForElmChange(selector, val) {
+  return new Promise(resolve => {
+    if (document.querySelector(selector) && document.querySelector(selector).getAttribute('href') !== val) {
+      return resolve(document.querySelector(selector));
+    }
+
+    const observer = new MutationObserver(mutations => {
+      if (document.querySelector(selector) && document.querySelector(selector).getAttribute('href') !== val) {
+        resolve(document.querySelector(selector));
+        observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
+
 function createElementFromHTML(htmlString) {
   var div = document.createElement('div');
   div.innerHTML = htmlString.trim();
@@ -27,7 +48,7 @@ function createElementFromHTML(htmlString) {
 }
 
 function createRoom() {
-  chrome.runtime.sendMessage({type: "create", name: username}, function(response) {
+  chrome.runtime.sendMessage({type: "create_room", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
@@ -35,21 +56,21 @@ function createRoom() {
 function joinRoom() {
   const room = document.querySelector("#join-room-id").value;
   console.log("Trying to join room", room);
-  chrome.runtime.sendMessage({type: "join", room: room, name: username}, function(response) {
+  chrome.runtime.sendMessage({type: "join_room", data: {room_id: room, name: username}}, function(response) {
     console.log(response);
   });
 }
 
 function leaveRoom() {
   console.log("Leaving current room");
-  chrome.runtime.sendMessage({type: "leave"}, function(response) {
+  chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
 }
 
 function sendMsg() {
   let msg = document.querySelector("#chatbox").value;
-  chrome.runtime.sendMessage({type: "message", msg: msg}, function(response) {
+  chrome.runtime.sendMessage({type: "message", data: {message: msg}}, function(response) {
     console.log(response);
   });
 }
@@ -92,8 +113,13 @@ chrome.runtime.onMessage.addListener(
       } else if (request.type === "message") {
         let user = request.data.user;
         let message = request.data.message;
-        console.log("GOT MESSAGE FROM " + user + ": " + message);
-        let newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`);
+        let type = request.data.type;
+        let newChat;
+        if (type === "submission") {
+          newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
+        } else {
+          newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`)
+        }
         document.querySelector("#chats").appendChild(newChat);
       } else if (request.type === "chatlog") {
         for (const chat of request.data) {
@@ -190,4 +216,18 @@ function myMain (e) {
   chrome.runtime.sendMessage({type: "retrieve_room_info"}, function(response) {
     console.log(response);
   });
+}
+
+waitForElm(".detail__1Ye5").then((res) => {submitted(res)});
+
+function submitted(e) {
+  var href = document.querySelector(".detail__1Ye5").getAttribute('href');
+  var check = href + "check";
+  fetch(check).then(res => res.json()).then(data => {
+    console.log(data);
+    chrome.runtime.sendMessage({type: "submission", data: data}, function(response) {
+      console.log(response);
+    });
+  })
+  waitForElmChange(".detail__1Ye5", href).then(res => {submitted(res)});
 }

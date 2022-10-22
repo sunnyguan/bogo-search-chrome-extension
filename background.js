@@ -29,6 +29,7 @@ socket.on("room_info", function(room_info) {
   sendMsg({type: "room_num", data: room_info.room_id});
   sendMsg({type: "players", data: room_info.players});
   sendMsg({type: "questions", data: room_info.questions});
+  sendMsg({type: "chatlog", data: room_info.chatlog});
 });
 
 socket.on("message", function(data) {

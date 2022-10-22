@@ -95,6 +95,11 @@ chrome.runtime.onMessage.addListener(
         console.log("GOT MESSAGE FROM " + user + ": " + message);
         let newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`);
         document.querySelector("#chats").appendChild(newChat);
+      } else if (request.type === "chatlog") {
+        for (const chat of request.data) {
+          let newChat = createElementFromHTML(`<p style='${chatStyle}'>${chat.user}: ${chat.message}</p>`);
+          document.querySelector("#chats").appendChild(newChat);
+        }
       }
     }
 );

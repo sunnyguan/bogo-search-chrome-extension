@@ -1,6 +1,8 @@
 import './scripts/socket.io.2.js';
 
 let socket = io("https://a7ed-153-33-85-75.ngrok.io/", {jsonp: false});
+console.log("Reconnected");
+console.log(socket.id);
 
 function sendMsg(data) {
   console.log(data)

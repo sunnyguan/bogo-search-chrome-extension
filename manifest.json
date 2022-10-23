@@ -16,7 +16,8 @@
     "type": "module"
   },
   "permissions": [
-    "tabs"
+    "tabs",
+    "storage"
   ],
   "host_permissions": [
     "https://*.leetcode.com/"

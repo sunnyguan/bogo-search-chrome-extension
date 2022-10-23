@@ -1,7 +1,9 @@
 
 
 const chatStyle = 'background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
-const adminStyle = 'color: darkblue; padding: 4px 8px;';
+const adminStyle = 'color: darkblue; padding: 4px 8px; clear: both; margin-bottom: 4px;';
+const submitPassStyle = 'background-color: green; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
+const submitFailStyle = 'background-color: red; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
 
 const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
 

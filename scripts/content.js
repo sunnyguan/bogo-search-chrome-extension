@@ -92,11 +92,15 @@ function addMessage(data) {
   let type = data.type;
   let newChat;
   if (type === "submission") {
-    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
+    if (message.includes("completed")) {
+      newChat = createElementFromHTML(`<p style='${submitPassStyle}'><b>Submission</b>: ${message} </p>`);
+    } else {
+      newChat = createElementFromHTML(`<p style='${submitFailStyle}'><b>Submission</b>: ${message} </p>`);
+    }
   } else if (type === "chat") {
     newChat = createElementFromHTML(`<p style='${chatStyle}'><b>${user}</b>: ${message} </p>`)
   } else if (type === "admin") {
-    newChat = createElementFromHTML(`<p style='${adminStyle}'><b>Admin</b>: ${message} </p>`);
+    newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
   }
   const chats = $("#chats");
   chats.appendChild(newChat);

@@ -154,7 +154,7 @@ chrome.runtime.onMessage.addListener(
       console.log(request);
       if (request.type === "room_info") {
         if ('players' in request.data) {
-          document.querySelector('#room-size').textContent = "Players: " + request.data.players;
+          document.querySelector('#room-size').innerHTML = "<b>Players: </b>" + request.data.players.join(", ");
         }
 
         if ('room_id' in request.data) {

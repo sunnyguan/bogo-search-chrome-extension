@@ -338,7 +338,7 @@ function myMain (e) {
   // username = document.querySelector(".user-name__35Mk").textContent;
 
   // retrieve current room info
-  chrome.runtime.sendMessage({type: "retrieve_room_info", data: {name: username}}, function(response) {
+  chrome.runtime.sendMessage({type: "retrieve_room_info"}, function(response) {
     console.log(response);
     if (username === 'undefined') {
       alert("You're not logged into LeetCode, so Rooms will not work.");

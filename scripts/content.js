@@ -64,6 +64,7 @@ function joinRoom() {
 
 function leaveRoom() {
   console.log("Leaving current room");
+  document.querySelector('#room-id').textContent = "Not In Room";
   chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
@@ -128,6 +129,7 @@ function addMessage(data) {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
+      console.log(request);
       if (request.type === "room_info") {
         if ('players' in request.data) {
           document.querySelector('#room-size').textContent = "Players: " + request.data.players;
@@ -185,7 +187,7 @@ const sidebar = `
 "><div style="
 ">
 <div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
-  Not in room yet
+  Not In Room
 </div></div>
 <div id="room-size" style="margin-bottom: 10px">
 </div>

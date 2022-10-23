@@ -121,7 +121,9 @@ function addMessage(data) {
   } else if (type === "admin") {
     newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Admin</b>: ${message} </p>`);
   }
-  document.querySelector("#chats").appendChild(newChat);
+  const chats = document.querySelector("#chats");
+  chats.appendChild(newChat);
+  chats.scrollTop = chats.scrollHeight;
 }
 
 chrome.runtime.onMessage.addListener(

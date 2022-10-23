@@ -126,15 +126,12 @@ function addMessage(data) {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-      if (request.type === "players") {
-        console.log("Room size", request.data);
-        // document.querySelector("#join-room").style.display = 'none';
-        document.querySelector('#room-size').textContent = "Room size: " + request.data;
-      } else if (request.type === "room_num") {
-        console.log("Room number", request.data);
+      if (request.type === "room_info") {
+        document.querySelector('#room-size').textContent = "Players: " + request.data.players;
         document.querySelector('#room-id').textContent = "In Room";
-      } else if (request.type === "questions") {
-        questions = request.data;
+        document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
+
+        questions = request.data.questions;
         console.log("LC Questions", request.data);
         let question_str = "";
         let currentQuestionExists = false;
@@ -153,15 +150,16 @@ chrome.runtime.onMessage.addListener(
           console.log(window.location.href);
           window.location.href = request.data[0][1];
         }
+
+        // chatlogs
+        if ('chatlog' in request.data) {
+          document.querySelector("#chats").innerHTML = "";
+          for (const chat of request.data.chatlog) {
+            addMessage(chat);
+          }
+        }
       } else if (request.type === "message") {
         addMessage(request.data);
-      } else if (request.type === "chatlog") {
-        document.querySelector("#chats").innerHTML = "";
-        for (const chat of request.data) {
-          addMessage(chat);
-        }
-      } else if (request.type === "room_name") {
-        document.querySelector("#room-name").textContent = request.data;
       }
     }
 );
@@ -182,7 +180,7 @@ const sidebar = `
 <div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
   Not in room yet
 </div></div>
-<div id="room-size" style="">
+<div id="room-size" style="margin-bottom: 10px">
 </div>
 <div id="questions">
 </div>

@@ -12,28 +12,9 @@ function sendMsg(data) {
   });
 }
 
-socket.on('current_room_number', function(rooms) {
-  console.log("Current room number: ", rooms);
-  sendMsg({type: "room_num", data: rooms});
-})
-
-socket.on('current_players', function(player) {
-  console.log("Current room size: ", player);
-  sendMsg({type: "room_size", data: player});
-})
-
-socket.on("list_of_leetcode_questions", function(questions) {
-  sendMsg({type: "questions", data: questions});
-});
-
 socket.on("room_info", function(room_info) {
   console.log(room_info)
-  sendMsg({type: "room_num", data: room_info.room_id});
-  sendMsg({type: "players", data: room_info.players});
-  sendMsg({type: "questions", data: room_info.questions});
-  sendMsg({type: "room_name", data: room_info.room_name});
-  if ("chatlog" in room_info)
-    sendMsg({type: "chatlog", data: room_info.chatlog});
+  sendMsg({type: "room_info", data: room_info});
 });
 
 socket.on("message", function(data) {

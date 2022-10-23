@@ -132,11 +132,11 @@ chrome.runtime.onMessage.addListener(
         document.querySelector('#room-size').textContent = "Room size: " + request.data;
       } else if (request.type === "room_num") {
         console.log("Room number", request.data);
-        document.querySelector('#room-id').textContent = "Room id: " + request.data;
+        document.querySelector('#room-id').textContent = "In Room";
       } else if (request.type === "questions") {
         questions = request.data;
         console.log("LC Questions", request.data);
-        let question_str = "<p>List of questions:</p>";
+        let question_str = "";
         let currentQuestionExists = false;
         for (let question of request.data) {
           let question_name = question[0];
@@ -160,6 +160,8 @@ chrome.runtime.onMessage.addListener(
         for (const chat of request.data) {
           addMessage(chat);
         }
+      } else if (request.type === "room_name") {
+        document.querySelector("#room-name").textContent = request.data;
       }
     }
 );
@@ -168,7 +170,7 @@ const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"
 
 const sidebar = `
 <div style="display: flex;flex-direction: column; max-width:30%;min-width: 15%;background-color: #fafafa;">
-    <div style="background: rgb(250, 250, 250); padding: 10px;">Rooms</div>
+    <div style="background: rgb(250, 250, 250); margin: 20px 20px 0 20px; padding-bottom: 10px; border-bottom: 1px solid lightgray" id="room-name" class="css-v3d350">Rooms</div>
     <div style="
     padding: 20px;
     display: flex;

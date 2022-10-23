@@ -132,10 +132,9 @@ chrome.runtime.onMessage.addListener(
         document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
 
         questions = request.data.questions;
-        console.log("LC Questions", request.data);
         let question_str = "";
         let currentQuestionExists = false;
-        for (let question of request.data) {
+        for (let question of request.data.questions) {
           let question_name = question[0];
           let question_url = question[1];
           question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
@@ -146,9 +145,8 @@ chrome.runtime.onMessage.addListener(
 
         if (!currentQuestionExists) {
           console.log("about to redirect");
-          console.log(request.data);
           console.log(window.location.href);
-          window.location.href = request.data[0][1];
+          window.location.href = request.data.questions[0][1];
         }
 
         // chatlogs

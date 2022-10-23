@@ -20,10 +20,12 @@ socket.on("room_info", function(room_info) {
 });
 
 socket.on("message", function(data) {
+  console.log(data);
   sendMsg({type: "message", data: data});
 });
 
 socket.on("leaderboard", function(data) {
+  console.log(data);
   sendMsg({type: "leaderboard", data: data});
 });
 

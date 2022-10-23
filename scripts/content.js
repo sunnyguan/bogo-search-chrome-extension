@@ -67,6 +67,9 @@ function leaveRoom() {
   document.querySelector('#room-id').textContent = "Not In Room";
   document.querySelector('#room-name').textContent = "Rooms";
   document.querySelector('#join-or-create').style.display = "block";
+  document.querySelector('#room-size').textContent = "";
+  document.querySelector("#chats").innerHTML = "";
+  document.querySelector("#chat-leave").style.display = 'none';
   chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
@@ -111,6 +114,7 @@ function nextQuestion() {
 }
 
 function showLeaderboard() {
+  if (questions.length === 0) return;
   document.querySelector("#leaderboard-modal").style.display = "flex";
   chrome.runtime.sendMessage({type: "leaderboard"}, function(response) {
     console.log(response);
@@ -153,6 +157,7 @@ chrome.runtime.onMessage.addListener(
         if ('room_id' in request.data) {
           console.log("here")
           document.querySelector('#room-id').textContent = "In Room";
+          document.querySelector('#chat-leave').style.display = "flex";
           document.querySelector('#join-or-create').style.display = "none";
           document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
         }
@@ -241,6 +246,9 @@ button.join-create-room {
     border-radius: 0.5rem;
     color: white;
     cursor: pointer;
+    font-weight: bold;
+    margin: auto;
+    padding: 6px;
 }
 button.join-create-room:hover {
     border: 2px solid blue;
@@ -260,11 +268,11 @@ button.join-create-room:active {
     background: orangered;
 }
 .input-box {
-    margin-right: 10px;
     flex-grow: 1;
     padding: 5px;
     border: 2px solid rgb(93, 163, 245);
     border-radius: 0.5rem;
+    margin-bottom: 8px;
 }
 #chatbox {
   margin-right: 0;
@@ -322,15 +330,33 @@ button.join-create-room:active {
 #scoreboard thead tr {
     font-weight: bold;
 }
+}
 </style>
-<div style="
+<div style="display: flex; flex-direction: column;
 ">
+
+<div id="join-or-create" style="margin: auto">
+<div style="display: flex; flex-direction: column; margin-bottom: 16px;">
+  <input type="text" id="join-room-id" class="input-box" />
+  <button id="join-room" class="join-create-room" data-no-border="true" icon="information">
+          Join Room
+  </button>
+</div>
+<div style="display: flex; flex-direction: column; margin-bottom: 10px;">
+  <input type="text" id="create-room-id" class="input-box" />
+  <button id="create-room" class="join-create-room" data-no-border="true" icon="information">
+          Create Room
+  </button>
+</div>
+</div>
+</div>
+<div id="chat-leave" style="display: none; height: 100%; flex-direction: column;">
 <div style="display: flex;margin-bottom: 10px;">
-<span>Status: </span>
-<div id="room-id" style="margin: auto 10px auto 10px">
+<span style="margin: auto 0 auto 0"><b>Status: </b></span>
+<div id="room-id" style="margin: auto 10px auto 10px; flex-grow: 1">
   Not In Room
 </div>
-<button id="leaderboard" class="join-create-room">Leaderboard</button>
+<button id="leaderboard" class="join-create-room" style="padding: 5px">Leaderboard</button>
 <div id="leaderboard-modal" class="modal">
 
   <!-- Modal content -->
@@ -352,22 +378,7 @@ button.join-create-room:active {
 </div>
 <div id="questions">
 </div>
-<div id="join-or-create">
-<div style="display: flex;margin-bottom: 10px;">
-  <input type="text" id="join-room-id" class="input-box" />
-  <button id="join-room" class="join-create-room" data-no-border="true" icon="information">
-          Join Room
-  </button>
-</div>
-<div style="display: flex;margin-bottom: 10px;">
-  <input type="text" id="create-room-id" class="input-box" />
-  <button id="create-room" class="join-create-room" data-no-border="true" icon="information">
-          Create Room
-  </button>
-</div>
-</div>
-</div>
-<div style="flex-grow: 1;border-radius: 1rem;background: #eeeeee;display: flex;flex-direction: column;"><div id="chats" style="
+<div id="chat-container" style="flex-grow: 1;border-radius: 1rem;background: #eeeeee;display: flex;flex-direction: column;"><div id="chats" style="
     flex-grow: 1;
     height: 0;
     overflow-y: scroll;
@@ -378,7 +389,7 @@ button.join-create-room:active {
 <div style="
     display: flex;
     margin-top: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 "><input type="text" placeholder="Enter message here" id="chatbox" class="input-box" />
 </div><div style="display: flex;">
   <button id="leave-room" class="join-create-room" data-no-border="true" icon="information" style="
@@ -386,6 +397,7 @@ button.join-create-room:active {
 ">
           Leave Room
   </button>
+</div>
 </div>
     </div>
 </div>

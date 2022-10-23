@@ -67,7 +67,7 @@ function leaveRoom() {
   document.querySelector('#room-id').textContent = "Not In Room";
   document.querySelector('#room-name').textContent = "Rooms";
   document.querySelector('#join-or-create').style.display = "block";
-  chrome.runtime.sendMessage({type: "leave_room", data: {name: username}}, function(response) {
+  chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
 }

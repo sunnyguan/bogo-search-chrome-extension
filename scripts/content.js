@@ -65,6 +65,8 @@ function joinRoom() {
 function leaveRoom() {
   console.log("Leaving current room");
   document.querySelector('#room-id').textContent = "Not In Room";
+  document.querySelector('#room-name').textContent = "Rooms";
+  document.querySelector('#join-or-create').style.display = "initial";
   chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
@@ -78,7 +80,7 @@ function sendMsg() {
 }
 
 function inputEnterMsg(e) {
-  if (e.key == "Enter") {
+  if (e.key === "Enter") {
     sendMsg();
     document.querySelector("#chatbox").value = "";
   }
@@ -87,7 +89,9 @@ function inputEnterMsg(e) {
 function currentQuestionId() {
   let i = 0;
   for (const question of questions) {
-    if (question[1].replace('www.', '') === window.location.href)
+    const q_name = question[1].split("problems/")[1].split("/")[0];
+    const curr_name = window.location.href.split("problems/")[1].split("/")[0];
+    if (q_name === curr_name)
       return i;
     i++;
   }
@@ -106,7 +110,7 @@ function nextQuestion() {
     window.location.href = questions[currId + 1][1];
 }
 
-const chatStyle = 'background-color: #cdeaf7;padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
+const chatStyle = 'background-color: #5da3f5; color: white; padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
 
 let questions = [];
 
@@ -118,7 +122,7 @@ function addMessage(data) {
   if (type === "submission") {
     newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Submission</b>: ${message} </p>`);
   } else if (type === "chat") {
-    newChat = createElementFromHTML(`<p style='${chatStyle}'>${user}: ${message} </p>`)
+    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>${user}</b>: ${message} </p>`)
   } else if (type === "admin") {
     newChat = createElementFromHTML(`<p style='${chatStyle}'><b>Admin</b>: ${message} </p>`);
   }
@@ -137,6 +141,7 @@ chrome.runtime.onMessage.addListener(
 
         if ('room_id' in request.data) {
           document.querySelector('#room-id').textContent = "In Room";
+          document.querySelector('#join-or-create').style.display = "none";
           document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
         }
 
@@ -151,7 +156,7 @@ chrome.runtime.onMessage.addListener(
             if (question_url.replace('www.', '') === window.location.href)
               currentQuestionExists = true;
           }
-          document.querySelector('#questions').innerHTML = question_str;
+          // document.querySelector('#questions').innerHTML = question_str;
 
           if (!currentQuestionExists) {
             console.log("about to redirect");
@@ -193,6 +198,7 @@ const sidebar = `
 </div>
 <div id="questions">
 </div>
+<div id="join-or-create">
 <div style="display: flex;margin-bottom: 10px;">
   <input type="text" id="join-room-id" style="
     margin-right: 10px;
@@ -214,7 +220,8 @@ const sidebar = `
   </button>
 </div>
 </div>
-<div style="flex-grow: 1;border-radius: 1rem;background: lightgray;display: flex;flex-direction: column;"><div id="chats" style="
+</div>
+<div style="flex-grow: 1;border-radius: 1rem;background: #eeeeee;display: flex;flex-direction: column;"><div id="chats" style="
     flex-grow: 1;
     height: 0;
     overflow-y: scroll;
@@ -247,17 +254,45 @@ function makePrevNextButton() {
     flex-grow: 1;
 ">${question_name}</div><div style="
     display: flex;
-"><div id="question-prev" style="
-    padding: 0 8px 0 8px;
-    background: lightblue;
-    margin: auto 5px auto 5px;
-    border-radius: 0.75rem;
-"><</div><div id="question-next" style="
-    padding: 0 8px 0 8px;
-    background: lightblue;
-    margin: auto 5px auto 5px;
-    border-radius: 0.75rem;
-">></div></div>`;
+">
+<style>
+button.rooms {
+  width: 30px;
+  height: 30px;
+  background-color: #fff;
+  border-radius: 24px;
+  border: 2px solid #f2af29;
+  transition: all 0.3s ease;
+}
+button.rooms::after {
+  content: "←";
+  font-size: 16px;
+  color: #f2af29;
+  transition: all 0.3s ease;
+}
+
+button#question-next::after {
+ content: "→"
+}
+
+button.rooms:hover {
+  border-color: #14519f;
+}
+
+button.rooms:hover::after {
+  color: #14519f;
+}
+
+button.rooms:active {
+  border-color: red;
+}
+
+button.rooms:active::after {
+  color: red;
+}
+</style>
+<button id="question-prev" class="rooms" style="margin-right: 10px"></button>
+<button id="question-next" class="rooms" style=""></button></div>`;
   document.querySelector('.css-v3d350').style.display = 'flex';
 }
 
@@ -314,7 +349,7 @@ function submitted(e) {
   var check = href + "check";
   fetch(check).then(res => res.json()).then(data => {
     console.log(data);
-    chrome.runtime.sendMessage({type: "submission", data: data}, function(response) {
+    chrome.runtime.sendMessage({type: "submission", data: {...data, curr_id: currentQuestionId()}}, function(response) {
       console.log(response);
     });
   })

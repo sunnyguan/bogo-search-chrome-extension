@@ -149,17 +149,14 @@ chrome.runtime.onMessage.addListener(
         if ('questions' in request.data) {
           questions = request.data.questions;
           let question_str = "";
-          let currentQuestionExists = false;
           for (let question of request.data.questions) {
             let question_name = question[0];
             let question_url = question[1];
             question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
-            if (question_url.replace('www.', '') === window.location.href)
-              currentQuestionExists = true;
           }
           // document.querySelector('#questions').innerHTML = question_str;
 
-          if (!currentQuestionExists) {
+          if (currentQuestionId() === -1) {
             console.log("about to redirect");
             console.log(window.location.href);
             window.location.href = request.data.questions[0][1];

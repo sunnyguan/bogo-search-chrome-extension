@@ -110,6 +110,12 @@ function nextQuestion() {
     window.location.href = questions[currId + 1][1];
 }
 
+function leaderboard() {
+  chrome.runtime.sendMessage({type: "leaderboard"}, function(response) {
+    console.log(response);
+  });
+}
+
 const chatStyle = 'background-color: #5da3f5; color: white; padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
 
 let questions = [];
@@ -187,33 +193,66 @@ const sidebar = `
     flex-direction: column;
     height: fit-content;
     flex-grow: 1;
-"><div style="
 ">
-<div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
+<style>
+button.join-create-room {
+    background: rgb(93, 163, 245);
+    border: 2px solid rgb(93, 163, 245);
+    border-radius: 0.5rem;
+    color: white;
+    cursor: pointer;
+}
+button.join-create-room:hover {
+    border: 2px solid blue;
+}
+button.join-create-room:active {
+    background: dodgerblue;
+}
+#leave-room {
+    border: 2px solid salmon;
+    background: lightsalmon;
+    padding: 4px;
+}
+#leave-room:hover {
+    border: 2px solid orangered;
+}
+#leave-room:active {
+    background: orangered;
+}
+.input-box {
+    margin-right: 10px;
+    flex-grow: 1;
+    padding: 5px;
+    border: 2px solid rgb(93, 163, 245);
+    border-radius: 0.5rem;
+}
+#chatbox {
+  margin-right: 0;
+}
+</style>
+<div style="
+">
+<div style="display: flex;margin-bottom: 10px;">
+<span>Status: </span>
+<div id="room-id" style="margin: auto 10px auto 10px">
   Not In Room
-</div></div>
+</div>
+<button id="leaderboard" class="join-create-room">Leaderboard</button>
+</div>
 <div id="room-size" style="margin-bottom: 10px">
 </div>
 <div id="questions">
 </div>
 <div id="join-or-create">
 <div style="display: flex;margin-bottom: 10px;">
-  <input type="text" id="join-room-id" style="
-    margin-right: 10px;
-    flex-grow: 1;
-    padding: 5px;
-">
-  <button id="join-room" data-no-border="true" icon="information">
+  <input type="text" id="join-room-id" class="input-box" />
+  <button id="join-room" class="join-create-room" data-no-border="true" icon="information">
           Join Room
   </button>
 </div>
 <div style="display: flex;margin-bottom: 10px;">
-  <input type="text" id="create-room-id" style="
-    margin-right: 10px;
-    flex-grow: 1;
-    padding: 5px;
-">
-  <button id="create-room" style="" data-no-border="true" icon="information">
+  <input type="text" id="create-room-id" class="input-box" />
+  <button id="create-room" class="join-create-room" data-no-border="true" icon="information">
           Create Room
   </button>
 </div>
@@ -231,11 +270,9 @@ const sidebar = `
     display: flex;
     margin-top: 10px;
     margin-bottom: 10px;
-"><input type="text" placeholder="Enter message here" id="chatbox" style="
-    flex-grow: 1;
-    padding: 5px;
-"></div><div style="display: flex;">
-  <button id="leave-room" data-no-border="true" icon="information" style="
+"><input type="text" placeholder="Enter message here" id="chatbox" class="input-box" />
+</div><div style="display: flex;">
+  <button id="leave-room" class="join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1;
 ">
           Leave Room
@@ -307,6 +344,7 @@ function myMain (e) {
   side.querySelector("#create-room").addEventListener('click', createRoom);
   side.querySelector("#join-room").addEventListener('click', joinRoom);
   side.querySelector("#leave-room").addEventListener('click', leaveRoom);
+  side.querySelector("#leaderboard").addEventListener('click', leaderboard);
   parent.appendChild(side);
 
   document.querySelector("#chatbox").addEventListener('keypress', inputEnterMsg);
@@ -327,6 +365,7 @@ function myMain (e) {
     if (username === undefined) username = "undefined";
     console.log(username);
   })
+
 
   // window.onbeforeunload = function(e) {
   //   leaveRoom();
@@ -349,8 +388,14 @@ function submitted(e) {
   var href = document.querySelector(".detail__1Ye5").getAttribute('href');
   var check = href + "check";
   fetch(check).then(res => res.json()).then(data => {
-    console.log(data);
-    chrome.runtime.sendMessage({type: "submission", data: {...data, name: username, curr_id: currentQuestionId()}}, function(response) {
+    const curr_id = currentQuestionId();
+    console.log("DIFFICULTY", questions[curr_id][2])
+    chrome.runtime.sendMessage({type: "submission", data: {
+        ...data,
+        name: username,
+        curr_id: curr_id,
+        difficulty: questions[curr_id][2]
+    }}, function(response) {
       console.log(response);
     });
   })

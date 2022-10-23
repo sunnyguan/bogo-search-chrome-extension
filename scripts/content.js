@@ -48,7 +48,8 @@ function createElementFromHTML(htmlString) {
 }
 
 function createRoom() {
-  chrome.runtime.sendMessage({type: "create_room", data: {name: username}}, function(response) {
+  const room_name = document.querySelector("#create-room-id").value;
+  chrome.runtime.sendMessage({type: "create_room", data: {name: username, room_name: room_name}}, function(response) {
     console.log(response);
   });
 }
@@ -104,7 +105,7 @@ function nextQuestion() {
     window.location.href = questions[currId + 1][1];
 }
 
-const chatStyle = 'background-color: lightblue;padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
+const chatStyle = 'background-color: #cdeaf7;padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
 
 let questions = [];
 
@@ -163,20 +164,18 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
+
 const sidebar = `
-<div style="display: flex;flex-direction: column;">
+<div style="display: flex;flex-direction: column; max-width:30%;min-width: 15%;background-color: #fafafa;">
+    <div style="background: rgb(250, 250, 250); padding: 10px;">Rooms</div>
     <div style="
-    background: #fafafa;
-    padding: 10px;
-">Rooms</div>
-    <div style="
-    padding: 10px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     height: fit-content;
     flex-grow: 1;
 "><div style="
-    padding: 10px;
 ">
 <div style="display: flex;margin-bottom: 10px;"><span>Status: </span><div id="room-id" style="margin: auto 10px auto 10px">
   Not in room yet
@@ -185,44 +184,52 @@ const sidebar = `
 </div>
 <div id="questions">
 </div>
-<div style="display: flex">
-  <input type="text" id="join-room-id">
-  <button id="join-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information">
+<div style="display: flex;margin-bottom: 10px;">
+  <input type="text" id="join-room-id" style="
+    margin-right: 10px;
+    flex-grow: 1;
+    padding: 5px;
+">
+  <button id="join-room" data-no-border="true" icon="information">
           Join Room
   </button>
-</div><button id="create-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information" style="
-    width: 100%;
-">
-        Create Room
-</button></div>
-<div style="
+</div>
+<div style="display: flex;margin-bottom: 10px;">
+  <input type="text" id="create-room-id" style="
+    margin-right: 10px;
     flex-grow: 1;
-    padding: 10px;
-    background: #eeeeee;
-    display: flex;
-    flex-direction: column;
-"><div id="chats" style="
+    padding: 5px;
+">
+  <button id="create-room" style="" data-no-border="true" icon="information">
+          Create Room
+  </button>
+</div>
+</div>
+<div style="flex-grow: 1;border-radius: 1rem;background: lightgray;display: flex;flex-direction: column;"><div id="chats" style="
     flex-grow: 1;
     height: 0;
     overflow-y: scroll;
+    padding: 20px;
 ">
-</div><div style="
-    display: flex;
-"><input type="text" id="chatbox" style="
-    flex-grow: 1;
-"><div id="sendMsg" style="
-    margin-left: 10px;
-">Send</div></div>
 </div>
-<div style="display: flex;">
-  <button id="leave-room" class="btn__1z2C btn-sm__2msL" data-no-border="true" icon="information" style="
+</div>
+<div style="
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 10px;
+"><input type="text" placeholder="Enter message here" id="chatbox" style="
+    flex-grow: 1;
+    padding: 5px;
+"></div><div style="display: flex;">
+  <button id="leave-room" data-no-border="true" icon="information" style="
     flex-grow: 1;
 ">
           Leave Room
   </button>
 </div>
     </div>
-</div>`
+</div>
+`
 
 function makePrevNextButton() {
   const question_name = document.querySelector('.css-v3d350').textContent;
@@ -251,13 +258,15 @@ waitForElm('.btns__1OeZ').then((res) => {myMain(res)});
 
 function myMain (e) {
   const parent = document.querySelector(".container__14Na");
+  const dividerEl = createElementFromHTML(divider);
+  parent.appendChild(dividerEl);
+
   const side = createElementFromHTML(sidebar);
   side.querySelector("#create-room").addEventListener('click', createRoom);
   side.querySelector("#join-room").addEventListener('click', joinRoom);
   side.querySelector("#leave-room").addEventListener('click', leaveRoom);
   parent.appendChild(side);
 
-  document.querySelector("#sendMsg").addEventListener('click', sendMsg);
   document.querySelector("#chatbox").addEventListener('keypress', inputEnterMsg);
 
   makePrevNextButton();

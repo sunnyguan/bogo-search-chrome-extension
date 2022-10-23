@@ -253,7 +253,7 @@ function makePrevNextButton() {
   document.querySelector('.css-v3d350').style.display = 'flex';
 }
 
-let username = "user" + Math.round(Math.random() * 100);
+let username = "user" + Math.round(Math.random() * 100000);
 
 waitForElm('.btns__1OeZ').then((res) => {myMain(res)});
 
@@ -274,6 +274,18 @@ function myMain (e) {
   document.querySelector("#question-prev").addEventListener('click', prevQuestion);
   document.querySelector("#question-next").addEventListener('click', nextQuestion);
 
+  fetch("https://leetcode.com/graphql", {
+    "headers": {
+      "content-type": "application/json",
+    },
+    "body": "{\"operationName\":\"globalData\",\"variables\":{},\"query\":\"query globalData {\\n  userStatus {username} }\\n\"}",
+    "method": "POST",
+    "mode": "cors",
+  }).then(res => res.json()).then(data => {
+    username = data.data?.userStatus?.username
+    if (username === undefined) username = "undefined";
+    console.log(username);
+  })
 
   // window.onbeforeunload = function(e) {
   //   leaveRoom();

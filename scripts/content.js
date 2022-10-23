@@ -66,15 +66,15 @@ function leaveRoom() {
   console.log("Leaving current room");
   document.querySelector('#room-id').textContent = "Not In Room";
   document.querySelector('#room-name').textContent = "Rooms";
-  document.querySelector('#join-or-create').style.display = "initial";
-  chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
+  document.querySelector('#join-or-create').style.display = "block";
+  chrome.runtime.sendMessage({type: "leave_room", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
 
 function sendMsg() {
   let msg = document.querySelector("#chatbox").value;
-  chrome.runtime.sendMessage({type: "message", data: {message: msg}}, function(response) {
+  chrome.runtime.sendMessage({type: "message", data: {message: msg, name: username}}, function(response) {
     console.log(response);
   });
 }
@@ -140,6 +140,7 @@ chrome.runtime.onMessage.addListener(
         }
 
         if ('room_id' in request.data) {
+          console.log("here")
           document.querySelector('#room-id').textContent = "In Room";
           document.querySelector('#join-or-create').style.display = "none";
           document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
@@ -337,8 +338,11 @@ function myMain (e) {
   // username = document.querySelector(".user-name__35Mk").textContent;
 
   // retrieve current room info
-  chrome.runtime.sendMessage({type: "retrieve_room_info"}, function(response) {
+  chrome.runtime.sendMessage({type: "retrieve_room_info", data: {name: username}}, function(response) {
     console.log(response);
+    if (username === 'undefined') {
+      alert("You're not logged into LeetCode, so Rooms will not work.");
+    }
   });
 }
 
@@ -349,7 +353,7 @@ function submitted(e) {
   var check = href + "check";
   fetch(check).then(res => res.json()).then(data => {
     console.log(data);
-    chrome.runtime.sendMessage({type: "submission", data: {...data, curr_id: currentQuestionId()}}, function(response) {
+    chrome.runtime.sendMessage({type: "submission", data: {...data, name: username, curr_id: currentQuestionId()}}, function(response) {
       console.log(response);
     });
   })

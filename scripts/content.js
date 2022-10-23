@@ -84,8 +84,11 @@ function sendMsg() {
 
 function inputEnterMsg(e) {
   if (e.key === "Enter") {
-    sendMsg();
-    document.querySelector("#chatbox").value = "";
+    const chatbox = document.querySelector("#chatbox");
+    if (chatbox.value !== "") {
+      sendMsg();
+      document.querySelector("#chatbox").value = "";
+    }
   }
 }
 

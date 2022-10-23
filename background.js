@@ -23,6 +23,10 @@ socket.on("message", function(data) {
   sendMsg({type: "message", data: data});
 });
 
+socket.on("leaderboard", function(data) {
+  sendMsg({type: "leaderboard", data: data});
+});
+
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse) {
       console.log(req);

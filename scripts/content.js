@@ -110,10 +110,15 @@ function nextQuestion() {
     window.location.href = questions[currId + 1][1];
 }
 
-function leaderboard() {
+function showLeaderboard() {
+  document.querySelector("#leaderboard-modal").style.display = "flex";
   chrome.runtime.sendMessage({type: "leaderboard"}, function(response) {
     console.log(response);
   });
+}
+
+function closeLeaderboard() {
+  document.querySelector("#leaderboard-modal").style.display = "none";
 }
 
 const chatStyle = 'background-color: #5da3f5; color: white; padding: 10px;border-radius: 0.75rem; clear: both; float: left;';
@@ -178,6 +183,41 @@ chrome.runtime.onMessage.addListener(
         }
       } else if (request.type === "message") {
         addMessage(request.data);
+      } else if (request.type === "leaderboard") {
+        const response = request.data;
+        console.log(request.data);
+        let table = `
+        <table id="scoreboard">
+          <thead>
+          <tr id="scoreboard-header">
+              <td>Name</td>
+        `;
+        for (const question of questions)
+          table += `<td>${question[0]}</td>`
+        table += '<td>Score</td></tr><tbody>'
+        for (const ranking of response.rankings) {
+          let row = `
+            <tr><td>${ranking[0]}</td>
+          `;
+          for (const status of response.question_status[ranking[0]]) {
+            let show = "−";
+            if (status === 2) {
+              show = "✅";
+            } else if (status === 1) {
+              show = "❌";
+            }
+            row += `<td>${show}</td>`
+          }
+          row += `<td>${ranking[1]}</td></tr>`;
+          table += row;
+        }
+
+        table += `
+          </tbody>
+        </table>`;
+
+        const original = document.querySelector("#scoreboard");
+        original.outerHTML = table;
       }
     }
 );
@@ -229,6 +269,59 @@ button.join-create-room:active {
 #chatbox {
   margin-right: 0;
 }
+
+/* The Modal (background) */
+#leaderboard-modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+}
+
+/* The Close Button */
+#close-leaderboard {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  margin-right: 16px;
+}
+
+#close-leaderboard:hover,
+#close-leaderboard:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#scoreboard td {
+    text-align: center; 
+    vertical-align: middle;
+}
+
+#scoreboard {
+    width: 100%;
+    border-spacing: 16px 10px;
+    border-collapse: separate;
+}
+
+#scoreboard thead tr {
+    font-weight: bold;
+}
 </style>
 <div style="
 ">
@@ -238,6 +331,22 @@ button.join-create-room:active {
   Not In Room
 </div>
 <button id="leaderboard" class="join-create-room">Leaderboard</button>
+<div id="leaderboard-modal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span id="close-leaderboard">&times;</span>
+    <h3 style="
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+">Leaderboard</h1>
+    <table id="scoreboard">
+    </table>
+  </div>
+
+</div>
+
 </div>
 <div id="room-size" style="margin-bottom: 10px">
 </div>
@@ -344,14 +453,22 @@ function myMain (e) {
   side.querySelector("#create-room").addEventListener('click', createRoom);
   side.querySelector("#join-room").addEventListener('click', joinRoom);
   side.querySelector("#leave-room").addEventListener('click', leaveRoom);
-  side.querySelector("#leaderboard").addEventListener('click', leaderboard);
+  side.querySelector("#leaderboard").addEventListener('click', showLeaderboard);
+  side.querySelector("#close-leaderboard").addEventListener('click', closeLeaderboard);
   parent.appendChild(side);
+
+  window.onclick = function(event) {
+    if (event.target === document.querySelector("#leaderboard-modal")) {
+      closeLeaderboard();
+    }
+  }
 
   document.querySelector("#chatbox").addEventListener('keypress', inputEnterMsg);
 
   makePrevNextButton();
   document.querySelector("#question-prev").addEventListener('click', prevQuestion);
   document.querySelector("#question-next").addEventListener('click', nextQuestion);
+
 
   fetch("https://leetcode.com/graphql", {
     "headers": {

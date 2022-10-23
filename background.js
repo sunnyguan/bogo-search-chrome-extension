@@ -40,3 +40,11 @@ chrome.runtime.onMessage.addListener(
       sendResponse({status: 200});
     }
 );
+
+// keep-alive
+chrome.runtime.onConnect.addListener((port) => {
+  console.log(port);
+  port.onMessage.addListener(msg => {
+    console.log(msg);
+  })
+});

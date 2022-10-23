@@ -49,7 +49,7 @@ function createElementFromHTML(htmlString) {
 
 function createRoom() {
   const room_name = document.querySelector("#create-room-id").value;
-  chrome.runtime.sendMessage({type: "create_room", data: {name: username, room_name: room_name}}, function(response) {
+  chrome.runtime.sendMessage({type: "create_room", data: {name: username, room_name: room_name, difficulties: [1, 2, 1]}}, function(response) {
     console.log(response);
   });
 }
@@ -530,3 +530,9 @@ function submitted(e) {
   })
   waitForElmChange(".detail__1Ye5", href).then(res => {submitted(res)});
 }
+
+// keep-alive
+setInterval(() => {
+  let port = chrome.runtime.connect({name: "keep-alive"});
+  port.postMessage({data: 'test'});
+}, 1000);

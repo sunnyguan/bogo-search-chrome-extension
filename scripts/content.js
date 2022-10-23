@@ -129,30 +129,36 @@ function addMessage(data) {
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       if (request.type === "room_info") {
-        document.querySelector('#room-size').textContent = "Players: " + request.data.players;
-        document.querySelector('#room-id').textContent = "In Room";
-        document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
-
-        questions = request.data.questions;
-        let question_str = "";
-        let currentQuestionExists = false;
-        for (let question of request.data.questions) {
-          let question_name = question[0];
-          let question_url = question[1];
-          question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
-          if (question_url.replace('www.', '') === window.location.href)
-            currentQuestionExists = true;
+        if ('players' in request.data) {
+          document.querySelector('#room-size').textContent = "Players: " + request.data.players;
         }
-        document.querySelector('#questions').innerHTML = question_str;
 
-        if (!currentQuestionExists) {
-          console.log("about to redirect");
-          console.log(window.location.href);
-          window.location.href = request.data.questions[0][1];
+        if ('room_id' in request.data) {
+          document.querySelector('#room-id').textContent = "In Room";
+          document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";
+        }
+
+        if ('questions' in request.data) {
+          questions = request.data.questions;
+          let question_str = "";
+          let currentQuestionExists = false;
+          for (let question of request.data.questions) {
+            let question_name = question[0];
+            let question_url = question[1];
+            question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
+            if (question_url.replace('www.', '') === window.location.href)
+              currentQuestionExists = true;
+          }
+          document.querySelector('#questions').innerHTML = question_str;
+
+          if (!currentQuestionExists) {
+            console.log("about to redirect");
+            console.log(window.location.href);
+            window.location.href = request.data.questions[0][1];
+          }
         }
 
         // chatlogs
-        console.log(request);
         if ('chatlog' in request.data) {
           document.querySelector("#chats").innerHTML = "";
           for (const chat of request.data.chatlog) {

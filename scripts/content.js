@@ -152,6 +152,7 @@ chrome.runtime.onMessage.addListener(
         }
 
         // chatlogs
+        console.log(request);
         if ('chatlog' in request.data) {
           document.querySelector("#chats").innerHTML = "";
           for (const chat of request.data.chatlog) {

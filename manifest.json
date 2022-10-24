@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Leetcode rooms",
-  "version": "1.0",
-  "description": "RIP binarysearch",
+  "name": "Bogosearch - LeetCode Rooms",
+  "version": "0.1",
+  "description": "Add rooms to LeetCode to compete solving problems with friends.",
   "content_scripts": [
     {
       "js": ["scripts/socket.io.2.js", "scripts/constants.js", "scripts/utils.js", "scripts/content.js"],

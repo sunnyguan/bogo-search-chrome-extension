@@ -5,8 +5,7 @@ let $;
 
 function createRoom() {
   const room_name = $("#create-room-id").value;
-  const difficulties_sum = difficulties.reduce((a, b) => a + b, 0);
-  if (room_name === "" || difficulties_sum !== 4) return;
+  if (room_name === "" || difficulties.reduce((a, b) => a + b, 0) === 0) return;
   chrome.runtime.sendMessage({type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties}}, function(response) {
     console.log(response);
   });
@@ -103,7 +102,7 @@ function addMessage(data) {
   }
   const chats = $("#chats");
   const timeParent = createElementFromHTML(`
-  <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">19:47</span></div>
+  <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">${data.time}</span></div>
   `)
   timeParent.appendChild(newChat);
   chats.appendChild(timeParent);
@@ -117,20 +116,22 @@ function renderDifficulties() {
   $("#hard-cnt").textContent = "Hard: " + difficulties[2].toString();
 }
 
+function addIfPossible(id, delta) {
+  difficulties[id] = difficulties[id] + delta;
+}
+
 function changeQuestions(event) {
   const target = event.target || event.srcElement;
   const id = target.id;
   const delta = id.split("-")[1][0] === 'a' ? 1 : -1;
   if (id[0] === 'e')
-    difficulties[0] += delta;
+    addIfPossible(0, delta);
   else if (id[0] === 'm')
-    difficulties[1] += delta;
+    addIfPossible(1, delta);
   else if (id[0] === 'h')
-    difficulties[2] += delta;
+    addIfPossible(2, delta);
   renderDifficulties();
 }
-
-
 
 function makePrevNextButton() {
   const question_name = $('.css-v3d350').textContent;

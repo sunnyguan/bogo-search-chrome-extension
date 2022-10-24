@@ -101,7 +101,7 @@ chrome.runtime.onMessage.addListener(
         `;
         for (const question of questions) {
           const color = difficulty_colors[question[2] - 1];
-          table += `<td style="color: ${color}">${question[0]}</td>`
+          table += `<td><a href="${question[1]}" style="color: ${color}">${question[0]}</a></td>`
         }
         table += '<td>Score</td></tr><tbody>'
         for (const ranking of response.rankings) {

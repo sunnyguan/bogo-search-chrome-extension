@@ -1,9 +1,9 @@
 
 
-const chatStyle = 'background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
-const adminStyle = 'color: darkblue; padding: 4px 8px; clear: both; margin-bottom: 4px;';
-const submitPassStyle = 'background-color: green; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
-const submitFailStyle = 'background-color: red; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 8px;';
+const chatStyle = 'background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;';
+const adminStyle = 'color: darkblue; padding: 4px 8px; clear: both; margin-bottom: 0;';
+const submitPassStyle = 'background-color: #009E60; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ';
+const submitFailStyle = 'background-color: #e32636; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;';
 
 const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
 
@@ -193,10 +193,9 @@ border-bottom: 2px solid lightgray;">
 </div>
 </div>
 <div id="chat-leave" style="display: none; height: 100%; flex-direction: column;">
+
 <div style="display: flex;margin-bottom: 10px;">
-<span style="margin: auto 0 auto 0"><b>Status: </b></span>
-<div id="room-id" style="margin: auto 10px auto 10px; flex-grow: 1">
-  Not In Room
+<div id="room-size" style="margin: auto; flex-grow: 1">
 </div>
 <button id="leaderboard" class="join-create-room" style="padding: 5px">Leaderboard</button>
 <div id="leaderboard-modal" class="modal">
@@ -216,8 +215,7 @@ border-bottom: 2px solid lightgray;">
 </div>
 
 </div>
-<div id="room-size" style="margin-bottom: 10px">
-</div>
+
 <div id="questions">
 </div>
 <div id="chat-container" style="flex-grow: 1;border-radius: 1rem;background: #eeeeee;display: flex;flex-direction: column;"><div id="chats" style="

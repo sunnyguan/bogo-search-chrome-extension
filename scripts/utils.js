@@ -59,7 +59,6 @@ chrome.runtime.onMessage.addListener(
 
         if ('room_id' in request.data) {
           console.log("here")
-          document.querySelector('#room-id').textContent = "In Room";
           document.querySelector('#chat-leave').style.display = "flex";
           document.querySelector('#join-or-create').style.display = "none";
           document.querySelector('#room-name').textContent = request.data.room_name + " (id=" + request.data.room_id + ")";

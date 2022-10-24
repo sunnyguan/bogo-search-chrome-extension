@@ -22,7 +22,6 @@ function joinRoom() {
 
 function leaveRoom() {
   console.log("Leaving current room");
-  $('#room-id').textContent = "Not In Room";
   $('#room-name').textContent = "Rooms";
   $('#join-or-create').style.display = "block";
   $('#room-size').textContent = "";
@@ -103,7 +102,11 @@ function addMessage(data) {
     newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
   }
   const chats = $("#chats");
-  chats.appendChild(newChat);
+  const timeParent = createElementFromHTML(`
+  <div style="display: flex; padding: 8px 0;"><span style="margin: auto 0; padding-right: 4px;">19:47</span></div>
+  `)
+  timeParent.appendChild(newChat);
+  chats.appendChild(timeParent);
   chats.scrollTop = chats.scrollHeight;
 }
 

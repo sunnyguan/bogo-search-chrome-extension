@@ -7,6 +7,12 @@ const submitFailStyle = 'background-color: #e32636; color: white; padding: 4px 8
 
 const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
 
+const replacements = {
+  ":blush:": "https://cdn.discordapp.com/emojis/807494943022120980.webp?size=96&quality=lossless",
+  ":flushdoggo:": "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
+  ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless"
+}
+
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
 
 let sidebar = `

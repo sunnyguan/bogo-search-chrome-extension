@@ -91,9 +91,17 @@ function closeLeaderboard() {
   $("#leaderboard-modal").style.display = "none";
 }
 
+function emojifyMessage(message) {
+  for (let key in replacements) {
+    let repl = `<img alt="${key}" src="${replacements[key]}" width="20px" />`;
+    message = message.replace(key, repl);
+  }
+  return message;
+}
+
 function addMessage(data) {
   let user = data.name;
-  let message = data.message;
+  let message = emojifyMessage(data.message);
   let type = data.type;
   let newChat;
   if (type === "submission") {

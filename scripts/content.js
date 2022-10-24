@@ -6,7 +6,14 @@ let $;
 function createRoom() {
   const room_name = $("#create-room-id").value;
   if (room_name === "" || difficulties.reduce((a, b) => a + b, 0) === 0) return;
-  chrome.runtime.sendMessage({type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties}}, function(response) {
+  var topics = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).filter(element => element.checked).map(element => {
+    return element.name;
+  });
+  console.log(topics);
+  chrome.runtime.sendMessage({
+    type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties,
+      topics: topics
+  }}, function(response) {
     console.log(response);
   });
 }
@@ -117,7 +124,10 @@ function renderDifficulties() {
 }
 
 function addIfPossible(id, delta) {
-  difficulties[id] = difficulties[id] + delta;
+  const res = difficulties[id] + delta;
+  if (res >= 0) {
+    difficulties[id] = res;
+  }
 }
 
 function changeQuestions(event) {
@@ -145,6 +155,10 @@ function makePrevNextButton() {
 <button id="question-next" class="rooms" style=""></button></div>`;
   $('.css-v3d350').style.display = 'flex';
 }
+
+
+// JSON of States for demo purposes
+var usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']
 
 function fetchUsername() {
   fetch("https://leetcode.com/graphql", {
@@ -196,6 +210,58 @@ function myMain (e) {
       closeLeaderboard();
     }
   }
+
+  // Populate list with states
+  usStates.forEach(element => {
+   var stateTemplate = createElementFromHTML(`
+      <li> 
+      <input name="${element}" type="checkbox">
+      <label for="${element}">${element}</label>
+      </li>
+    `);
+   $('#topic-select').appendChild(stateTemplate);
+  })
+
+  // Events
+$('.dropdown-button')
+    .addEventListener('click', function() {
+      const curDisplay = $('.dropdown-list').style.display;
+      $('.dropdown-list').style.display = curDisplay === 'none' ? 'block' : 'none';
+    });
+$('.dropdown-search')
+    .addEventListener('keyup', function(event) {
+      var target = $('.dropdown-search');
+      var dropdownList = $('.dropdown-list');
+      var search = target.value.toLowerCase();
+
+      if (!search) {
+        Array.from(document.querySelectorAll('.dropdown-list li')).forEach(element => {
+          element.style.display = 'block';
+        })
+        return false;
+      }
+
+      Array.from(document.querySelectorAll('.dropdown-list li')).forEach(element => {
+        element.style.display = 'block';
+        var text = element.textContent.toLowerCase();
+        var match = text.indexOf(search) > -1;
+        if (match) {
+          element.style.display = 'block';
+        } else {
+          element.style.display = 'none';
+        }
+      });
+    });
+Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).forEach(element => {
+    element.addEventListener('change', function() {
+      var container = $('.dropdown-container');
+      var numChecked = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).map(element => {
+        if (element.checked) return 1;
+        return 0;
+      }).reduce((a, b) => a + b, 0);
+      console.log(numChecked)
+      $('.quantity').textContent = numChecked || 'Any';
+    })});
 
   fetchUsername();
 

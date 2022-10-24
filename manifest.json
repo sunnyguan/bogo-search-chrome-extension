@@ -23,6 +23,7 @@
     "https://*.leetcode.com/"
   ],
   "icons": {
-    "128": "lcrooms.png"
+    "128": "128.png",
+    "64": "64.png"
   }
 }

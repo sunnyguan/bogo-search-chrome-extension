@@ -88,8 +88,11 @@ chrome.runtime.onMessage.addListener(
             addMessage(chat);
           }
         }
-      } else if (request.type === "message") {
+      }
+      else if (request.type === "message") {
         addMessage(request.data);
+      } else if (request.type === "error") {
+        alert(request.data.message);
       } else if (request.type === "leaderboard") {
         const response = request.data;
         console.log(request.data);

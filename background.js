@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("https://0f0f-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("https://8f26-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 
@@ -27,6 +27,11 @@ socket.on("message", function(data) {
 socket.on("leaderboard", function(data) {
   console.log(data);
   sendMsg({type: "leaderboard", data: data});
+});
+
+socket.on("error", function(data) {
+  console.log(data);
+  sendMsg({type: "message", data: data});
 });
 
 chrome.runtime.onMessage.addListener(

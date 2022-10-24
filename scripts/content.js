@@ -103,7 +103,7 @@ function addMessage(data) {
   }
   const chats = $("#chats");
   const timeParent = createElementFromHTML(`
-  <div style="display: flex; padding: 8px 0;"><span style="margin: auto 0; padding-right: 4px;">19:47</span></div>
+  <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">19:47</span></div>
   `)
   timeParent.appendChild(newChat);
   chats.appendChild(timeParent);

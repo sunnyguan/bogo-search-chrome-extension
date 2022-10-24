@@ -16,11 +16,7 @@
     "type": "module"
   },
   "permissions": [
-    "tabs",
-    "storage"
-  ],
-  "host_permissions": [
-    "https://*.leetcode.com/"
+    "tabs"
   ],
   "icons": {
     "128": "128.png",

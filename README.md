@@ -1,3 +1,3 @@
-# Bogo Search Chrome Extension (LeetCode Rooms)
+# Bogo Search (LeetCode Rooms)
 
-Add Rooms to Leetcode. See https://github.com/lacjnhi/leetcode-rooms for more information. 
+Add rooms to Leetcode. See https://github.com/lacjnhi/bogo-search for more information. 

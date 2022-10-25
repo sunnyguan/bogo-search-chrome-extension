@@ -91,10 +91,9 @@ chrome.runtime.onMessage.addListener(
 
         // is owner
         if ('is_owner' in request.data) {
-          document.querySelector("#chats").innerHTML = "";
+          alert(request.data.is_owner)
         }
-      }
-      else if (request.type === "message") {
+      } else if (request.type === "message") {
         addMessage(request.data);
       } else if (request.type === "new_owner") {
         alert(request.data.name + " is the new owner!");

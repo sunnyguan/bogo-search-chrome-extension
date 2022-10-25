@@ -31,7 +31,7 @@ socket.on("leaderboard", function(data) {
 
 socket.on("error", function(data) {
   console.log(data);
-  sendMsg({type: "error", data: data});
+  sendMsg({type: "message", data: data});
 });
 
 socket.on("new_owner", function(data) {

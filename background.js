@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("http://54.145.184.126:5000/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("https://8bc0-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 
@@ -46,10 +46,20 @@ chrome.runtime.onMessage.addListener(
     }
 );
 
+let lastMsgTime = Date.now();
+
 // keep-alive
 chrome.runtime.onConnect.addListener((port) => {
-  console.log(port);
   port.onMessage.addListener(msg => {
-    console.log(msg);
+    lastMsgTime = Date.now();
   })
 });
+
+const timeout = 60;
+
+let check = setInterval(() => {
+  if (Date.now() - lastMsgTime >= 1000 * timeout) {
+    socket.emit("leave_room");
+    clearInterval(check);
+  }
+}, timeout * 1000 / 2);

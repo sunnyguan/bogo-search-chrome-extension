@@ -31,7 +31,12 @@ socket.on("leaderboard", function(data) {
 
 socket.on("error", function(data) {
   console.log(data);
-  sendMsg({type: "message", data: data});
+  sendMsg({type: "error", data: data});
+});
+
+socket.on("new_owner", function(data) {
+  console.log(data);
+  sendMsg({type: "new_owner", data: data});
 });
 
 chrome.runtime.onMessage.addListener(

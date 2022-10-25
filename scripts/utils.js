@@ -88,9 +88,16 @@ chrome.runtime.onMessage.addListener(
             addMessage(chat);
           }
         }
+
+        // is owner
+        if ('is_owner' in request.data) {
+          document.querySelector("#chats").innerHTML = "";
+        }
       }
       else if (request.type === "message") {
         addMessage(request.data);
+      } else if (request.type === "new_owner") {
+        alert(request.data.name + " is the new owner!");
       } else if (request.type === "error") {
         alert(request.data.message);
       } else if (request.type === "leaderboard") {

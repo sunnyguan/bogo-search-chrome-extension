@@ -10,7 +10,12 @@ const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
 const replacements = {
   ":blush:": "https://cdn.discordapp.com/emojis/807494943022120980.webp?size=96&quality=lossless",
   ":flushdoggo:": "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
-  ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless"
+  ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless",
+  ":catyesnod:": "https://cdn.discordapp.com/emojis/771217244092104735.gif?size=96&quality=lossless",
+  ":this_tbh:" : "https://cdn.discordapp.com/emojis/804408341815754812.webp?size=96&quality=lossless",
+  ":pepemoney:" : "https://cdn.discordapp.com/emojis/933157489267048558.gif?size=96&quality=lossless",
+  ":prayge:" : "https://cdn.discordapp.com/emojis/867052598446915605.webp?size=96&quality=lossless",
+  ":blobthx:" : "https://cdn.discordapp.com/emojis/838079891978190859.webp?size=96&quality=lossless"
 }
 
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;

@@ -6,13 +6,16 @@ let $;
 function createRoom() {
   const room_name = $("#create-room-id").value;
   if (room_name === "" || difficulties.reduce((a, b) => a + b, 0) === 0) return;
-  var topics = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).filter(element => element.checked).map(element => {
+  let topics = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).filter(element => element.checked).map(element => {
     return element.name;
   });
+  let problemset = document.querySelector("#problemset").value;
+  alert(problemset);
   console.log(topics);
   chrome.runtime.sendMessage({
     type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties,
-      topics: topics
+      topics: topics,
+      problemset: problemset
   }}, function(response) {
     console.log(response);
   });

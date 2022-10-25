@@ -93,7 +93,7 @@ function closeLeaderboard() {
 
 function emojifyMessage(message) {
   for (let key in replacements) {
-    let repl = `<img alt="${key}" src="${replacements[key]}" width="20px" />`;
+    let repl = `<img alt="${key}" src="${replacements[key]}" width="20px" title="${key}" />`;
     message = message.replace(key, repl);
   }
   return message;
@@ -107,6 +107,8 @@ function addMessage(data) {
   if (type === "submission") {
     if (message.includes("completed")) {
       newChat = createElementFromHTML(`<p style='${submitPassStyle}'><b>Submission</b>: ${message} </p>`);
+    } else if (message.includes("finished")) {
+      newChat = createElementFromHTML(`<p style='${submitWinStyle}'><b>${message} 🎉🎉</b></p>`);
     } else {
       newChat = createElementFromHTML(`<p style='${submitFailStyle}'><b>Submission</b>: ${message} </p>`);
     }

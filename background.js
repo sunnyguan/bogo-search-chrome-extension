@@ -6,7 +6,7 @@ console.log(socket.id);
 
 function sendMsg(data) {
   console.log(data)
-  chrome.tabs.query({url: "https://*.leetcode.com/*", currentWindow: true}, function(tabs) {
+  chrome.tabs.query({url: "https://*.leetcode.com/*", currentWindow: true, active: true}, function(tabs) {
     console.log(tabs);
     chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
       console.log(response);

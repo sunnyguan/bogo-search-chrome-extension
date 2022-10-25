@@ -10,7 +10,6 @@ function createRoom() {
     return element.name;
   });
   let problemset = document.querySelector("#problemset").value;
-  alert(problemset);
   console.log(topics);
   chrome.runtime.sendMessage({
     type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties,

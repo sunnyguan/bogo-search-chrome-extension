@@ -151,8 +151,8 @@ function addMessage(data) {
   }
   const chats = $("#chats");
   const time = new Date(data.time * 1000);
-  const hr = time.getHours();
-  const mn = time.getMinutes();
+  const hr = time.getHours().toString().padStart(2, '0');
+  const mn = time.getMinutes().toString().padStart(2, '0');
   const timeParent = createElementFromHTML(`
   <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">${hr}:${mn}</span></div>
   `)

@@ -66,19 +66,6 @@ chrome.runtime.onMessage.addListener(
 
         if ('questions' in request.data) {
           questions = request.data.questions;
-          let question_str = "";
-          for (let question of request.data.questions) {
-            let question_name = question[0];
-            let question_url = question[1];
-            question_str += `<p><a href='${question_url}'>${question_name}</a></p>`
-          }
-          // document.querySelector('#questions').innerHTML = question_str;
-
-          if (currentQuestionId() === -1) {
-            console.log("about to redirect");
-            console.log(window.location.href);
-            window.location.href = request.data.questions[0][1];
-          }
         }
 
         // chatlogs
@@ -91,12 +78,21 @@ chrome.runtime.onMessage.addListener(
 
         // is owner
         if ('is_owner' in request.data && request.data.is_owner) {
+          $('#start-room').style.display = 'block';
           $('#restart-room').style.display = 'block';
+        }
+
+        // room started
+        if ('is_started' in request.data && request.data.is_started) {
+          startRoom();
         }
       } else if (request.type === "message") {
         addMessage(request.data);
       } else if (request.type === "new_owner") {
+        $('#start-room').style.display = 'block';
         $('#restart-room').style.display = 'block';
+      } else if (request.type === "start") {
+        startRoom();
       } else if (request.type === "error") {
         alert(request.data.message);
       } else if (request.type === "leaderboard") {
@@ -110,7 +106,8 @@ chrome.runtime.onMessage.addListener(
         `;
         for (const question of questions) {
           const color = difficulty_colors[question[2] - 1];
-          table += `<td><a href="${question[1]}" style="color: ${color}">${question[0]}</a></td>`
+          const text = started ? question[0] : "********";
+          table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
         }
         table += '<td>Score</td></tr><tbody>'
         for (const ranking of response.rankings) {

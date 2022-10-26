@@ -1,4 +1,5 @@
 let questions = [];
+let started = false;
 let difficulties = [1, 2, 1];
 let username = "user" + Math.round(Math.random() * 100000);
 let $;
@@ -36,6 +37,8 @@ function leaveRoom() {
   $("#chats").innerHTML = "";
   $("#chat-leave").style.display = 'none';
   $('#restart-room').style.display = 'none';
+  $('#start-room').style.display = 'none';
+  started = false;
   chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });
@@ -43,9 +46,25 @@ function leaveRoom() {
 
 function restartRoom() {
   console.log("Restarting current room");
+  started = false;
   chrome.runtime.sendMessage({type: "restart"}, function(response) {
     console.log(response);
   });
+}
+
+function sendStartRoom() {
+  chrome.runtime.sendMessage({type: "ready"}, function(response) {
+    console.log(response);
+  });
+}
+
+function startRoom() {
+  started = true;
+  if (currentQuestionId() === -1) {
+    console.log("about to redirect");
+    console.log(window.location.href);
+    window.location.href = questions[0][1];
+  }
 }
 
 function sendMsg() {
@@ -125,6 +144,9 @@ function addMessage(data) {
   } else if (type === "chat") {
     newChat = createElementFromHTML(`<p style='${chatStyle}'><b>${user}</b>: ${message} </p>`)
   } else if (type === "admin") {
+    newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
+  } else if (type === "start") {
+    // TODO
     newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
   }
   const chats = $("#chats");
@@ -210,6 +232,7 @@ function myMain (e) {
   $("#join-room").addEventListener('click', joinRoom);
   $("#leave-room").addEventListener('click', leaveRoom);
   $("#restart-room").addEventListener('click', restartRoom);
+  $("#start-room").addEventListener('click', sendStartRoom);
   $("#leaderboard").addEventListener('click', showLeaderboard);
   $("#close-leaderboard").addEventListener('click', closeLeaderboard);
 

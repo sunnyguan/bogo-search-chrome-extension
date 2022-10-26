@@ -39,7 +39,7 @@ function leaveRoom() {
   $('#restart-room').style.display = 'none';
   $('#start-room').style.display = 'none';
   started = false;
-  chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
+  chrome.runtime.sendMessage({type: "leave_room", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
@@ -47,13 +47,13 @@ function leaveRoom() {
 function restartRoom() {
   console.log("Restarting current room");
   started = false;
-  chrome.runtime.sendMessage({type: "restart"}, function(response) {
+  chrome.runtime.sendMessage({type: "restart", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
 
 function sendStartRoom() {
-  chrome.runtime.sendMessage({type: "ready"}, function(response) {
+  chrome.runtime.sendMessage({type: "ready", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
@@ -111,7 +111,7 @@ function nextQuestion() {
 function showLeaderboard() {
   if (questions.length === 0) return;
   $("#leaderboard-modal").style.display = "flex";
-  chrome.runtime.sendMessage({type: "leaderboard"}, function(response) {
+  chrome.runtime.sendMessage({type: "leaderboard", data: {name: username}}, function(response) {
     console.log(response);
   });
 }
@@ -313,7 +313,7 @@ Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).forE
   fetchUsername();
 
   // retrieve current room info
-  chrome.runtime.sendMessage({type: "retrieve_room_info"}, function(response) {
+  chrome.runtime.sendMessage({type: "retrieve_room_info", data: {name: username}}, function(response) {
     console.log(response);
     if (username === 'undefined') {
       alert("You're not logged into LeetCode, so Rooms will not work.");

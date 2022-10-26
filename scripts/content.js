@@ -150,8 +150,11 @@ function addMessage(data) {
     newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
   }
   const chats = $("#chats");
+  const time = new Date(data.time * 1000);
+  const hr = time.getHours();
+  const mn = time.getMinutes();
   const timeParent = createElementFromHTML(`
-  <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">${data.time}</span></div>
+  <div style="display: flex; padding: 6px 0;"><span style="margin: auto 0; padding-right: 8px;">${hr}:${mn}</span></div>
   `)
   timeParent.appendChild(newChat);
   chats.appendChild(timeParent);

@@ -349,7 +349,7 @@ border-bottom: 2px solid lightgray;">
   <button id="restart-room" class="join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1; margin-right: 10px; display: none;
 ">
-          Restart Room
+          Stop Room
   </button>
   <button id="leave-room" class="join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1;

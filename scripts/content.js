@@ -35,6 +35,7 @@ function leaveRoom() {
   $('#room-size').textContent = "";
   $("#chats").innerHTML = "";
   $("#chat-leave").style.display = 'none';
+  $('#restart-room').style.display = 'none';
   chrome.runtime.sendMessage({type: "leave_room"}, function(response) {
     console.log(response);
   });

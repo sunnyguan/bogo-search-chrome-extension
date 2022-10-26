@@ -205,8 +205,8 @@ function makePrevNextButton() {
 // JSON of States for demo purposes
 var usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']
 
-async function fetchUsername() {
-  await fetch("https://leetcode.com/graphql", {
+function fetchUsername() {
+  return fetch("https://leetcode.com/graphql", {
     "headers": {
       "content-type": "application/json",
     },
@@ -220,7 +220,7 @@ async function fetchUsername() {
   })
 }
 
-async function myMain(e) {
+function myMain(e) {
   $ = document.querySelector.bind(document);
 
   const parent = $(".container__14Na");
@@ -311,15 +311,15 @@ async function myMain(e) {
     })
   });
 
-  await fetchUsername();
-
-  // retrieve current room info
-  chrome.runtime.sendMessage({type: "retrieve_room_info", data: {name: username}}, function (response) {
-    console.log(response);
-    if (username === 'undefined') {
-      alert("You're not logged into LeetCode, so Rooms will not work.");
-    }
-  });
+  fetchUsername().then(res => {
+    // retrieve current room info
+    chrome.runtime.sendMessage({type: "retrieve_room_info", data: {name: username}}, function (response) {
+      console.log(response);
+      if (username === 'undefined') {
+        alert("You're not logged into LeetCode, so Rooms will not work.");
+      }
+    });
+  })
 }
 
 function submitted(e) {

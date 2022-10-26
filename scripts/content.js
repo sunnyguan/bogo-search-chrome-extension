@@ -40,6 +40,13 @@ function leaveRoom() {
   });
 }
 
+function restartRoom() {
+  console.log("Restarting current room");
+  chrome.runtime.sendMessage({type: "restart"}, function(response) {
+    console.log(response);
+  });
+}
+
 function sendMsg() {
   let msg = $("#chatbox").value;
   chrome.runtime.sendMessage({type: "message", data: {message: msg, name: username}}, function(response) {
@@ -201,6 +208,7 @@ function myMain (e) {
   $("#create-room").addEventListener('click', createRoom);
   $("#join-room").addEventListener('click', joinRoom);
   $("#leave-room").addEventListener('click', leaveRoom);
+  $("#restart-room").addEventListener('click', restartRoom);
   $("#leaderboard").addEventListener('click', showLeaderboard);
   $("#close-leaderboard").addEventListener('click', closeLeaderboard);
 

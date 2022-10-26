@@ -90,8 +90,8 @@ chrome.runtime.onMessage.addListener(
         }
 
         // is owner
-        if ('is_owner' in request.data) {
-          alert(request.data.is_owner)
+        if ('is_owner' in request.data && request.data.is_owner) {
+          $('#restart-room').style.display = 'block';
         }
       } else if (request.type === "message") {
         addMessage(request.data);

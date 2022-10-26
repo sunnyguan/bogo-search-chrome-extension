@@ -341,6 +341,11 @@ border-bottom: 2px solid lightgray;">
     margin-bottom: 20px;
 "><input type="text" placeholder="Enter message here" id="chatbox" class="input-box">
 </div><div style="display: flex;">
+  <button id="restart-room" class="join-create-room" data-no-border="true" icon="information" style="
+    flex-grow: 1; margin-right: 10px; display: none;
+">
+          Restart Room
+  </button>
   <button id="leave-room" class="join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1;
 ">

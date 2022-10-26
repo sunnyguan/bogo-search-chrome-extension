@@ -96,7 +96,7 @@ chrome.runtime.onMessage.addListener(
       } else if (request.type === "message") {
         addMessage(request.data);
       } else if (request.type === "new_owner") {
-        alert(request.data.name + " is the new owner!");
+        $('#restart-room').style.display = 'block';
       } else if (request.type === "error") {
         alert(request.data.message);
       } else if (request.type === "leaderboard") {

@@ -83,8 +83,11 @@ chrome.runtime.onMessage.addListener(
         }
 
         // room started
-        if ('is_started' in request.data && request.data.is_started) {
-          startRoom();
+        if ('is_started' in request.data) {
+          if (request.data.is_started)
+            startRoom();
+          else
+            started = false;
         }
       } else if (request.type === "message") {
         addMessage(request.data);

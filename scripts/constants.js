@@ -254,7 +254,7 @@ border-bottom: 2px solid lightgray;">
 </table>
 </div>
 
-<div class="instructions"><b>Choose topics (optional):</b></div>
+<div class="instructions" style="margin-bottom: 16px"><b>Choose topics (optional):</b></div>
 <div class="dropdown-container" style="
 ">
     <div class="dropdown-button noselect" style="
@@ -273,7 +273,7 @@ border-bottom: 2px solid lightgray;">
     </div>
 </div>
 
-<div class="instructions"><b>Choose problemsets (optional):</b></div>
+<div class="instructions" style="margin-top: 16px;"><b>Choose problemsets (optional):</b></div>
 <div class="custom-select">
   <select id="problemset" style="
     width: 100%;
@@ -290,7 +290,7 @@ border-bottom: 2px solid lightgray;">
   </select>
 </div>
 
-<div style="display: flex; flex-direction: column; margin-bottom: 10px;">
+<div style="display: flex; flex-direction: column; margin-bottom: 10px; margin-top: 16px;">
   <input type="text" id="create-room-id" class="input-box" placeholder="Room Name">
   <button id="create-room" class="join-create-room" data-no-border="true" icon="information">
           Create Room

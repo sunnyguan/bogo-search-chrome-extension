@@ -6,7 +6,7 @@ console.log(socket.id);
 
 function sendMsg(data) {
   console.log(data)
-  chrome.tabs.query({url: "https://*.leetcode.com/*", currentWindow: true, active: true}, function(tabs) {
+  chrome.tabs.query({url: "https://*.leetcode.com/*", currentWindow: true}, function(tabs) {
     console.log(tabs);
     chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
       console.log(response);
@@ -57,14 +57,16 @@ let lastMsgTime = Date.now();
 chrome.runtime.onConnect.addListener((port) => {
   port.onMessage.addListener(msg => {
     lastMsgTime = Date.now();
+    console.log(msg);
   })
 });
 
 const timeout = 60;
 
 let check = setInterval(() => {
+  console.log("Checking")
   if (Date.now() - lastMsgTime >= 1000 * timeout) {
     socket.emit("leave_room");
     clearInterval(check);
   }
-}, timeout * 1000 / 2);
+}, 1000);

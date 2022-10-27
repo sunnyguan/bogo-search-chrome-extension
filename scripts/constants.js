@@ -9,6 +9,10 @@ const submitFailStyle = 'background-color: #e32636; color: white; padding: 4px 8
 const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
 
 const replacements = {
+  ":biggwiggle:": "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
+  ":bigwiggle:": "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
+  ":thonk:": "https://cdn.discordapp.com/emojis/539305279217598474.webp?size=96&quality=lossless",
+  ":cope:": "https://cdn.discordapp.com/emojis/752324497935171664.webp?size=96&quality=lossless",
   ":blush:": "https://cdn.discordapp.com/emojis/807494943022120980.webp?size=96&quality=lossless",
   ":flushdoggo:": "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
   ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless",

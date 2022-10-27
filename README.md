@@ -16,4 +16,9 @@ Getting Started:
 
 # Technologies Used
 
+# Preview
+
+One Player Demo:
+
+https://user-images.githubusercontent.com/70824468/198400368-1a81cc3e-24d2-45aa-81b7-c61b4907511e.mov
 

@@ -13,10 +13,14 @@ const replacements = {
   ":flushdoggo:": "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
   ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless",
   ":catyesnod:": "https://cdn.discordapp.com/emojis/771217244092104735.gif?size=96&quality=lossless",
-  ":this_tbh:" : "https://cdn.discordapp.com/emojis/804408341815754812.webp?size=96&quality=lossless",
-  ":pepemoney:" : "https://cdn.discordapp.com/emojis/933157489267048558.gif?size=96&quality=lossless",
-  ":prayge:" : "https://cdn.discordapp.com/emojis/867052598446915605.webp?size=96&quality=lossless",
-  ":blobthx:" : "https://cdn.discordapp.com/emojis/838079891978190859.webp?size=96&quality=lossless"
+  ":this_tbh:": "https://cdn.discordapp.com/emojis/804408341815754812.webp?size=96&quality=lossless",
+  ":pepemoney:": "https://cdn.discordapp.com/emojis/933157489267048558.gif?size=96&quality=lossless",
+  ":prayge:": "https://cdn.discordapp.com/emojis/867052598446915605.webp?size=96&quality=lossless",
+  ":blobthx:": "https://cdn.discordapp.com/emojis/838079891978190859.webp?size=96&quality=lossless",
+  ":kek:": "https://cdn.discordapp.com/emojis/696881519498625056.webp?size=240&quality=lossless",
+  ":run:": "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
+  ":ez:": "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
+  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless"
 }
 
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
@@ -230,7 +234,7 @@ border-bottom: 2px solid lightgray;">
 </div>
 
 <div style="text-align: center; margin: 10px 0 10px 0;">
-<p><b>Choose 4 question difficulties:</b></p>
+<p><b>Choose question difficulties:</b></p>
 <table style="width: 100%">
 <tbody>
 <tr>
@@ -273,7 +277,7 @@ border-bottom: 2px solid lightgray;">
     </div>
 </div>
 
-<div class="instructions" style="margin-top: 16px;"><b>Choose problemsets (optional):</b></div>
+<div class="instructions" style="margin-top: 16px;"><b>Choose problem sets (optional):</b></div>
 <div class="custom-select">
   <select id="problemset" style="
     width: 100%;

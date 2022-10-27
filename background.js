@@ -62,6 +62,7 @@ chrome.runtime.onMessage.addListener(
       console.log(req);
       if (req.type === "retrieve_room_info") {
         username = req.data.name;
+        socket.emit("reconnect", {name: username});
         console.log("set username to " + username);
       }
       if ('data' in req) {

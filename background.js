@@ -19,8 +19,10 @@ socket.on("disconnect", () => {
 });
 
 socket.on("connect", () => {
+  console.log("sending reconnect.....!!Ou13q3FJEFJ:WEFJOWEIJFOWEF)WEF*)(FJWEOFIJOWEIFJ");
+  console.log(username);
   if (username !== "undefined")
-    sendMsg({type: "reconnect", data: {name: username}});
+    socket.emit("reconnect", {name: username});
 });
 
 socket.on("room_info", function(room_info) {

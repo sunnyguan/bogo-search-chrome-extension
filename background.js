@@ -93,3 +93,7 @@ let check = setInterval(() => {
     clearInterval(check);
   }
 }, 1000);
+
+let heartbeat = setInterval(() => {
+  socket.emit("heartbeat");
+}, 1000);

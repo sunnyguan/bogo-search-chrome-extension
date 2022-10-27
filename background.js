@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("http://54.145.184.126:5000/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("https://8012-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 
@@ -13,6 +13,15 @@ function sendMsg(data) {
     });
   });
 }
+
+socket.on("disconnect", () => {
+  console.log("DISCONNECTED!!!!!!!!");
+});
+
+socket.on("connect", () => {
+  if (username !== "undefined")
+    sendMsg({type: "reconnect", data: {name: username}});
+});
 
 socket.on("room_info", function(room_info) {
   console.log(room_info)
@@ -44,11 +53,18 @@ socket.on("start", function(data) {
   sendMsg({type: "start", data: data});
 });
 
+let username = "undefined";
+
 chrome.runtime.onMessage.addListener(
     function(req, sender, sendResponse) {
       console.log(req);
+      if (req.type === "retrieve_room_info") {
+        username = req.data.name;
+        console.log("set username to " + username);
+      }
       if ('data' in req) {
         socket.emit(req.type, req.data);
+
       } else {
         socket.emit(req.type);
       }

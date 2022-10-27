@@ -327,14 +327,16 @@ function submitted(e) {
   var check = href + "check";
   fetch(check).then(res => res.json()).then(data => {
     const curr_id = currentQuestionId();
-    chrome.runtime.sendMessage({type: "submission", data: {
-        ...data,
-        name: username,
-        curr_id: curr_id,
-        difficulty: questions[curr_id][2]
-    }}, function(response) {
-      console.log(response);
-    });
+    if (started) {
+      chrome.runtime.sendMessage({type: "submission", data: {
+          ...data,
+          name: username,
+          curr_id: curr_id,
+          difficulty: questions[curr_id][2]
+      }}, function(response) {
+        console.log(response);
+      });
+    }
   })
   waitForElmChange(".detail__1Ye5", href).then(res => {submitted(res)});
 }

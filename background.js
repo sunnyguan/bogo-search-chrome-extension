@@ -90,7 +90,7 @@ const timeout = 60;
 let check = setInterval(() => {
   // console.log("Checking")
   if (Date.now() - lastMsgTime >= 1000 * timeout) {
-    socket.emit("leave_room");
+    socket.emit("leave_room", {name: username});
     clearInterval(check);
   }
 }, 1000);

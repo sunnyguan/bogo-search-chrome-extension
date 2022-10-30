@@ -85,7 +85,7 @@ chrome.runtime.onConnect.addListener((port) => {
   })
 });
 
-const timeout = 10;
+const timeout = 20;
 
 let check = setInterval(() => {
   console.log("Checking")

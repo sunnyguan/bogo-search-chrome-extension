@@ -8,8 +8,10 @@ function sendMsg(data) {
   console.log(data)
   chrome.tabs.query({url: "https://*.leetcode.com/*"}, function(tabs) {
     console.log(tabs);
-    chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
-      console.log(response);
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, data, function (response) {
+        console.log(response);
+      });
     });
   });
 }

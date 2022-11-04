@@ -65,10 +65,10 @@ function sendStartRoom() {
 
 function startRoom(goToFirst) {
   started = true;
-  if ((!goToFirst && currentQuestionId() === -1) || (goToFirst && currentQuestionId() !== 0)) {
+  if (goToFirst) {
     console.log("about to redirect");
     console.log(window.location.href);
-    window.location.href = questions[0][1];
+    window.location.href = questions[0][1] + "#";
   }
 }
 

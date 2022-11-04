@@ -49,6 +49,25 @@ function createElementFromHTML(htmlString) {
   return div.firstChild;
 }
 
+let timer = 0;
+let interval = undefined;
+
+function secToHMS(timer) {
+  let res = "";
+  // if (timer >= 3600) {
+  //   res += Math.floor(timer / 3600).toString().padStart(2, '0') + ":";
+  //   timer %= 3600;
+  // }
+  res += Math.floor(timer / 60).toString().padStart(2, '0') + ":";
+  timer %= 60;
+  res += timer.toString().padStart(2, '0');
+  return res;
+}
+
+function renderTimer(timer) {
+  $('#timer').textContent = secToHMS(timer);
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       console.log(request);
@@ -89,6 +108,21 @@ chrome.runtime.onMessage.addListener(
           else
             started = false;
         }
+
+        // timer
+        if ('timer' in request.data) {
+          timer = request.data.timer;
+          interval = setInterval(() => {
+            if (timer <= 0 || !started) {
+              clearInterval(interval);
+            } else {
+              timer -= 1;
+              renderTimer(timer);
+            }
+          }, 1000);
+        } else {
+          renderTimer(0);
+        }
       } else if (request.type === "message") {
         addMessage(request.data);
       } else if (request.type === "new_owner") {
@@ -107,7 +141,7 @@ chrome.runtime.onMessage.addListener(
           <tr id="scoreboard-header">
               <td>Name</td>
         `;
-
+        console.log(response.rankings)
         if (response.rankings.length !== 0) {
           for (const question of questions) {
             const color = difficulty_colors[question[2] - 1];
@@ -121,9 +155,10 @@ chrome.runtime.onMessage.addListener(
           `;
             for (const status of response.question_status[ranking[0]]) {
               let show = "−";
-              if (status === 2) {
-                show = "✅";
-              } else if (status === 1) {
+              console.log(status);
+              if (status[0] === 2) {
+                show = `<span style="color:black">${secToHMS(Math.floor(status[1]))} ✅</span>`;
+              } else if (status[0] === 1) {
                 show = "❌";
               }
               row += `<td>${show}</td>`

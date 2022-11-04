@@ -35,7 +35,7 @@ const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"
 
 const sidebar = `
 <div style="overflow-y: scroll; display: flex;flex-direction: column; max-width:30%;min-width: 15%;background-color: #fafafa;">
-    <div style="background: rgb(250, 250, 250); margin: 20px 20px 0 20px; padding-bottom: 10px; border-bottom: 1px solid lightgray" id="room-name" class="css-v3d350">Rooms</div>
+    <div style="background: rgb(250, 250, 250); margin: 20px 20px 0 20px; padding-bottom: 10px; border-bottom: 1px solid lightgray" class="css-v3d350"><span id="room-name">Rooms</span><span style="float: right">⏰<span id="timer" style="margin-left: 8px;"></span></span></div>
     <div style="
     padding: 20px;
     display: flex;

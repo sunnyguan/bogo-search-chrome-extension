@@ -146,6 +146,7 @@ chrome.runtime.onMessage.addListener(
         `;
         console.log(response.rankings)
         if (response.rankings.length !== 0) {
+          console.log("PRWOEPIFJPWEOIFPWEIFJPWEIJ")
           for (const question of questions) {
             const color = difficulty_colors[question[2] - 1];
             const text = question[0];

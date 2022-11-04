@@ -43,6 +43,7 @@ function leaveRoom() {
   $("#chat-leave").style.display = 'none';
   $('#restart-room').style.display = 'none';
   $('#start-room').style.display = 'none';
+  $('#timer').textContent = '';
   started = false;
   chrome.runtime.sendMessage({type: "leave_room", data: {name: username}}, function(response) {
     console.log(response);

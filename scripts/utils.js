@@ -50,7 +50,6 @@ function createElementFromHTML(htmlString) {
 }
 
 let timer = 0;
-let interval = undefined;
 
 function secToHMS(timer) {
   let res = "";
@@ -64,8 +63,16 @@ function secToHMS(timer) {
   return res;
 }
 
-function renderTimer(timer) {
-  $('#timer').textContent = secToHMS(timer);
+let timeout = false;
+
+function renderTimer() {
+  if (timer > 0 && started) {
+    timer -= 1;
+    $('#timer').textContent = secToHMS(timer);
+    setTimeout(renderTimer, 1000);
+  } else {
+    timeout = false;
+  }
 }
 
 chrome.runtime.onMessage.addListener(
@@ -112,19 +119,9 @@ chrome.runtime.onMessage.addListener(
         // timer
         if ('timer' in request.data) {
           timer = request.data.timer;
-          if (interval === undefined) {
-            interval = setInterval(() => {
-              if (timer <= 0 || !started) {
-                clearInterval(interval);
-                interval = undefined;
-              } else {
-                timer -= 1;
-                renderTimer(timer);
-              }
-            }, 1000);
+          if (!timeout) {
+            timeout = setTimeout(renderTimer, 1000);
           }
-        } else {
-          renderTimer(0);
         }
       } else if (request.type === "message") {
         addMessage(request.data);
@@ -137,46 +134,39 @@ chrome.runtime.onMessage.addListener(
         alert(request.data.message);
       } else if (request.type === "leaderboard") {
         const response = request.data;
-        console.log(request.data);
         let table = `
         <table id="scoreboard">
           <thead>
           <tr id="scoreboard-header">
               <td>Name</td>
         `;
-        console.log(response.rankings)
-        if (response.rankings.length !== 0) {
-          console.log("PRWOEPIFJPWEOIFPWEIFJPWEIJ")
-          for (const question of questions) {
-            const color = difficulty_colors[question[2] - 1];
-            const text = question[0];
-            table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
-          }
-          table += '<td>Score</td></tr><tbody>'
-          for (const ranking of response.rankings) {
-            let row = `
-            <tr><td>${ranking[0]}</td>
-          `;
-            for (const status of response.question_status[ranking[0]]) {
-              let show = "−";
-              console.log(status);
-              if (status[0] === 2) {
-                show = `<span style="color:black">${secToHMS(Math.floor(status[1]))} ✅</span>`;
-              } else if (status[0] === 1) {
-                show = "❌";
-              }
-              row += `<td>${show}</td>`
-            }
-            row += `<td>${ranking[1]}</td></tr>`;
-            table += row;
-          }
-
-          table += `
-          </tbody>
-        </table>`;
-        } else {
-          table = `<p>Room has not started!</p>`
+        for (const question of questions) {
+          const color = difficulty_colors[question[2] - 1];
+          const text = question[0];
+          table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
         }
+        table += '<td>Score</td></tr><tbody>'
+        for (const ranking of response.rankings) {
+          let row = `
+          <tr><td>${ranking[0]}</td>
+        `;
+          for (const status of response.question_status[ranking[0]]) {
+            let show = "−";
+            console.log(status);
+            if (status[0] === 2) {
+              show = `<span style="color:black">${secToHMS(Math.floor(status[1]))} ✅</span>`;
+            } else if (status[0] === 1) {
+              show = "❌";
+            }
+            row += `<td>${show}</td>`
+          }
+          row += `<td>${ranking[1]}</td></tr>`;
+          table += row;
+        }
+
+        table += `
+        </tbody>
+      </table>`;
 
         const original = document.querySelector("#scoreboard");
         original.outerHTML = table;

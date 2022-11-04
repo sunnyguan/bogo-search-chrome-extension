@@ -66,7 +66,7 @@ function sendStartRoom() {
 
 function startRoom(goToFirst) {
   started = true;
-  if (goToFirst) {
+  if (currentQuestionId() === -1) {
     console.log("about to redirect");
     console.log(window.location.href);
     window.location.href = questions[0][1] + "#";

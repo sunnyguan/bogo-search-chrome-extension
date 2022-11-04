@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("http://20.115.68.42:5000/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("https://9162-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 

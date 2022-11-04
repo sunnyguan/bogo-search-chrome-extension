@@ -85,7 +85,7 @@ chrome.runtime.onMessage.addListener(
         // room started
         if ('is_started' in request.data) {
           if (request.data.is_started)
-            startRoom();
+            startRoom(false);
           else
             started = false;
         }
@@ -95,7 +95,7 @@ chrome.runtime.onMessage.addListener(
         $('#start-room').style.display = 'block';
         $('#restart-room').style.display = 'block';
       } else if (request.type === "start") {
-        startRoom();
+        startRoom(true);
       } else if (request.type === "error") {
         alert(request.data.message);
       } else if (request.type === "leaderboard") {

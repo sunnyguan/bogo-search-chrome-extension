@@ -24,8 +24,12 @@ const replacements = {
   ":kek:": "https://cdn.discordapp.com/emojis/696881519498625056.webp?size=240&quality=lossless",
   ":run:": "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
   ":ez:": "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
-  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless"
+  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless",
 }
+
+var usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']
+
+const mentionStyle = '20px solid #f3c339';
 
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
 
@@ -265,15 +269,15 @@ border-bottom: 2px solid lightgray;">
 <div class="instructions" style="margin-bottom: 16px"><b>Choose topics (optional):</b></div>
 <div class="dropdown-container" style="
 ">
-    <div class="dropdown-button noselect" style="
+    <div id="dropdown-button-1" class="dropdown-button noselect" style="
     border-radius: 1rem;
 ">
         <div class="dropdown-label">Topics</div>
-        <div class="dropdown-quantity">(<span class="quantity">All</span>)</div>
+        <div class="dropdown-quantity">(<span id="quantity-1" class="quantity">All</span>)</div>
         <i class="fa fa-filter"></i>
     </div>
-    <div class="dropdown-list" style="display: none; position: absolute; background: white; width: 200px; margin-top: 43px;">
-        <input type="search" placeholder="Search Topics" class="dropdown-search input-box" style="border-color: lightgray;width: 100%;text-align: center;" data-com.bitwarden.browser.user-edited="yes">
+    <div class="dropdown-list" id="dropdown-list-1" style="display: none; position: absolute; background: white; width: 200px; margin-top: 43px;">
+        <input type="search" placeholder="Search Topics" id="dropdown-search-1" class="dropdown-search input-box" style="border-color: lightgray;width: 100%;text-align: center;">
         <ul id="topic-select" style="
     padding: 14px 0 0 0;
     border-top: 2px solid lightgray;
@@ -296,6 +300,25 @@ border-bottom: 2px solid lightgray;">
     <option value="blind75">Blind 75</option>
     <option value="neetcode150">Neetcode 150</option>
   </select>
+</div>
+
+<div class="instructions" style="margin-bottom: 16px"><b>Choose questions (optional):</b></div>
+<div class="dropdown-container" style="
+">
+    <div id="dropdown-button-2" class="dropdown-button noselect" style="
+    border-radius: 1rem;
+">
+        <div class="dropdown-label">Questions</div>
+        <div class="dropdown-quantity">(<span id="quantity-2" class="quantity">Any</span>)</div>
+        <i class="fa fa-filter"></i>
+    </div>
+    <div id="dropdown-list-2" class="dropdown-list" style="display: none; position: absolute; background: white; width: 200px; margin-top: 43px;">
+        <input type="search" placeholder="Search Questions" id="dropdown-search-2" class="dropdown-search input-box" style="border-color: lightgray;width: 100%;text-align: center;">
+        <ul id="question-select" style="
+    padding: 14px 0 0 0;
+    border-top: 2px solid lightgray;
+"></ul>
+    </div>
 </div>
 
 <div style="display: flex; flex-direction: column; margin-bottom: 10px; margin-top: 16px;">

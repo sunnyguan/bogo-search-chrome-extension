@@ -10,12 +10,17 @@ function createRoom() {
   let topics = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).filter(element => element.checked).map(element => {
     return element.name;
   });
+  let questions = Array.from(document.querySelectorAll('#question-select input[type=checkbox]')).filter(element => element.checked).map(element => {
+    return element.name;
+  });
   let problemset = document.querySelector("#problemset").value;
   console.log(topics);
+  console.log(questions);
   chrome.runtime.sendMessage({
     type: "create_room", data: {name: username, room_name: room_name, difficulties: difficulties,
       topics: topics,
-      problemset: problemset
+      problemset: problemset,
+      questions: questions
   }}, function(response) {
     console.log(response);
   });
@@ -130,25 +135,36 @@ function emojifyMessage(message) {
 
 function addMessage(data) {
   let user = data.name;
-  let message = emojifyMessage(data.message);
+  let message = data.message;
   let type = data.type;
   let newChat;
   if (type === "submission") {
     if (message.includes("completed")) {
-      newChat = createElementFromHTML(`<p style='${submitPassStyle}'><b>Submission</b>: ${message} </p>`);
+      newChat = createElementFromHTML(`<p style='${submitPassStyle}'><b>Submission</b>: <span></span></p>`);
+      newChat.querySelector('span').textContent = message;
     } else if (message.includes("finished")) {
-      newChat = createElementFromHTML(`<p style='${submitWinStyle}'><b>${message} 🎉🎉</b></p>`);
+      newChat = createElementFromHTML(`<p style='${submitWinStyle}'><b></b></p>`);
+      newChat.querySelector('b').textContent = message + "🎉🎉";
     } else {
-      newChat = createElementFromHTML(`<p style='${submitFailStyle}'><b>Submission</b>: ${message} </p>`);
+      newChat = createElementFromHTML(`<p style='${submitFailStyle}'><b>Submission</b>: <span></span></p>`);
+      newChat.querySelector('span').textContent = message;
     }
   } else if (type === "chat") {
-    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>${user}</b>: ${message} </p>`)
+    newChat = createElementFromHTML(`<p style='${chatStyle}'><b>${user}</b>: <span></span> </p>`)
+    newChat.querySelector('span').textContent = message;
+    if (message.includes(username)) {
+      newChat.style.borderLeft = mentionStyle;
+    }
   } else if (type === "admin") {
-    newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
+    newChat = createElementFromHTML(`<p style='${adminStyle}'></p>`);
+    newChat.textContent = message;
   } else if (type === "start") {
     // TODO
-    newChat = createElementFromHTML(`<p style='${adminStyle}'>${message}</p>`);
+    newChat = createElementFromHTML(`<p style='${adminStyle}'></p>`);
+    newChat.textContent = message;
   }
+  newChat.innerHTML = emojifyMessage(newChat.innerHTML);
+
   const chats = $("#chats");
   const time = new Date(data.time * 1000);
   const hr = time.getHours().toString().padStart(2, '0');
@@ -203,7 +219,6 @@ function makePrevNextButton() {
 
 
 // JSON of States for demo purposes
-var usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']
 
 function fetchUsername() {
   return fetch("https://leetcode.com/graphql", {
@@ -258,6 +273,8 @@ function myMain(e) {
     }
   }
 
+  //// dropdowns
+
   // Populate list with states
   usStates.forEach(element => {
     var stateTemplate = createElementFromHTML(`
@@ -269,26 +286,47 @@ function myMain(e) {
     $('#topic-select').appendChild(stateTemplate);
   })
 
+  // Populate list with states
+  Object.entries(questions_title_map).forEach(info => {
+    const abbr = info[1];
+    const title = info[0];
+    var stateTemplate = createElementFromHTML(`
+      <li> 
+      <input name="${abbr}" type="checkbox">
+      <label for="${abbr}">${title}</label>
+      </li>
+    `);
+    $('#question-select').appendChild(stateTemplate);
+  })
+
   // Events
-  $('.dropdown-button')
+  $('#dropdown-button-1')
       .addEventListener('click', function () {
-        const curDisplay = $('.dropdown-list').style.display;
-        $('.dropdown-list').style.display = curDisplay === 'none' ? 'block' : 'none';
+        const list = $('#dropdown-list-1');
+        const curDisplay = list.style.display;
+        list.style.display = curDisplay === 'none' ? 'block' : 'none';
       });
-  $('.dropdown-search')
+
+  $('#dropdown-button-2')
+      .addEventListener('click', function () {
+        const list = $('#dropdown-list-2');
+        const curDisplay = list.style.display;
+        list.style.display = curDisplay === 'none' ? 'block' : 'none';
+      });
+
+  $('#dropdown-search-1')
       .addEventListener('keyup', function (event) {
-        var target = $('.dropdown-search');
-        var dropdownList = $('.dropdown-list');
+        var target = $('#dropdown-search-1');
         var search = target.value.toLowerCase();
 
         if (!search) {
-          Array.from(document.querySelectorAll('.dropdown-list li')).forEach(element => {
+          Array.from(document.querySelectorAll('#dropdown-list-1 li')).forEach(element => {
             element.style.display = 'block';
           })
           return false;
         }
 
-        Array.from(document.querySelectorAll('.dropdown-list li')).forEach(element => {
+        Array.from(document.querySelectorAll('#dropdown-list-1 li')).forEach(element => {
           element.style.display = 'block';
           var text = element.textContent.toLowerCase();
           var match = text.indexOf(search) > -1;
@@ -299,15 +337,50 @@ function myMain(e) {
           }
         });
       });
+
+  $('#dropdown-search-2')
+      .addEventListener('keyup', function (event) {
+        var target = $('#dropdown-search-2');
+        var search = target.value.toLowerCase();
+
+        if (!search) {
+          Array.from(document.querySelectorAll('#dropdown-list-2 li')).forEach(element => {
+            element.style.display = 'block';
+          })
+          return false;
+        }
+
+        Array.from(document.querySelectorAll('#dropdown-list-2 li')).forEach(element => {
+          element.style.display = 'block';
+          var text = element.textContent.toLowerCase();
+          var match = text.indexOf(search) > -1;
+          if (match) {
+            element.style.display = 'block';
+          } else {
+            element.style.display = 'none';
+          }
+        });
+      });
+
   Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).forEach(element => {
     element.addEventListener('change', function () {
-      var container = $('.dropdown-container');
       var numChecked = Array.from(document.querySelectorAll('#topic-select input[type=checkbox]')).map(element => {
         if (element.checked) return 1;
         return 0;
       }).reduce((a, b) => a + b, 0);
       console.log(numChecked)
-      $('.quantity').textContent = numChecked || 'Any';
+      $('#quantity-1').textContent = numChecked || 'Any';
+    })
+  });
+
+   Array.from(document.querySelectorAll('#question-select input[type=checkbox]')).forEach(element => {
+    element.addEventListener('change', function () {
+      var numChecked = Array.from(document.querySelectorAll('#question-select input[type=checkbox]')).map(element => {
+        if (element.checked) return 1;
+        return 0;
+      }).reduce((a, b) => a + b, 0);
+      console.log(numChecked)
+      $('#quantity-2').textContent = numChecked || 'Any';
     })
   });
 

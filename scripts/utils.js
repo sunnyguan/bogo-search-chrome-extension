@@ -112,14 +112,17 @@ chrome.runtime.onMessage.addListener(
         // timer
         if ('timer' in request.data) {
           timer = request.data.timer;
-          interval = setInterval(() => {
-            if (timer <= 0 || !started) {
-              clearInterval(interval);
-            } else {
-              timer -= 1;
-              renderTimer(timer);
-            }
-          }, 1000);
+          if (interval === undefined) {
+            interval = setInterval(() => {
+              if (timer <= 0 || !started) {
+                clearInterval(interval);
+                interval = undefined;
+              } else {
+                timer -= 1;
+                renderTimer(timer);
+              }
+            }, 1000);
+          }
         } else {
           renderTimer(0);
         }

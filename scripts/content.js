@@ -114,7 +114,6 @@ function nextQuestion() {
 }
 
 function showLeaderboard() {
-  if (questions.length === 0) return;
   $("#leaderboard-modal").style.display = "flex";
   chrome.runtime.sendMessage({type: "leaderboard", data: {name: username}}, function(response) {
     console.log(response);

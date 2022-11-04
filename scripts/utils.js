@@ -107,32 +107,37 @@ chrome.runtime.onMessage.addListener(
           <tr id="scoreboard-header">
               <td>Name</td>
         `;
-        for (const question of questions) {
-          const color = difficulty_colors[question[2] - 1];
-          const text = started ? question[0] : "********";
-          table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
-        }
-        table += '<td>Score</td></tr><tbody>'
-        for (const ranking of response.rankings) {
-          let row = `
+
+        if (response.rankings.length !== 0) {
+          for (const question of questions) {
+            const color = difficulty_colors[question[2] - 1];
+            const text = question[0];
+            table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
+          }
+          table += '<td>Score</td></tr><tbody>'
+          for (const ranking of response.rankings) {
+            let row = `
             <tr><td>${ranking[0]}</td>
           `;
-          for (const status of response.question_status[ranking[0]]) {
-            let show = "−";
-            if (status === 2) {
-              show = "✅";
-            } else if (status === 1) {
-              show = "❌";
+            for (const status of response.question_status[ranking[0]]) {
+              let show = "−";
+              if (status === 2) {
+                show = "✅";
+              } else if (status === 1) {
+                show = "❌";
+              }
+              row += `<td>${show}</td>`
             }
-            row += `<td>${show}</td>`
+            row += `<td>${ranking[1]}</td></tr>`;
+            table += row;
           }
-          row += `<td>${ranking[1]}</td></tr>`;
-          table += row;
-        }
 
-        table += `
+          table += `
           </tbody>
         </table>`;
+        } else {
+          table = `<p>Room has not started!</p>`
+        }
 
         const original = document.querySelector("#scoreboard");
         original.outerHTML = table;

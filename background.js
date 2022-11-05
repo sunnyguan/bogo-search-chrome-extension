@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("https://9162-153-33-85-75.ngrok.io/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("http://20.115.68.42:5001/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 
@@ -21,7 +21,7 @@ socket.on("disconnect", () => {
 });
 
 socket.on("connect", () => {
-  console.log("sending reconnect.....!!Ou13q3FJEFJ:WEFJOWEIJFOWEF)WEF*)(FJWEOFIJOWEIFJ");
+  console.log("sending reconnect.....");
   console.log(username);
   if (username !== "undefined")
     socket.emit("reconnect", {name: username});
@@ -44,7 +44,7 @@ socket.on("leaderboard", function(data) {
 
 socket.on("error", function(data) {
   console.log(data);
-  sendMsg({type: "message", data: data});
+  sendMsg({type: "error", data: data});
 });
 
 socket.on("new_owner", function(data) {

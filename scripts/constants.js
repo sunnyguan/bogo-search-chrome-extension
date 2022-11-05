@@ -20,7 +20,9 @@ const replacements = {
   ":kek:": "https://cdn.discordapp.com/emojis/696881519498625056.webp?size=240&quality=lossless",
   ":run:": "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
   ":ez:": "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
-  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless"
+  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless",
+  ":sunny:": "https://cdn.discordapp.com/emojis/1038352130416848996.webp?size=96&quality=lossless",
+  ":sunnyy:": "https://cdn.discordapp.com/emojis/1038352151413530674.webp?size=96&quality=lossless"
 }
 
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;

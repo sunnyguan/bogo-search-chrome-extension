@@ -25,6 +25,8 @@ const replacements = {
   ":run:": "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
   ":ez:": "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
   ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless",
+  ":sunny:": "https://cdn.discordapp.com/emojis/1038352130416848996.webp?size=96&quality=lossless",
+  ":sunnyy:": "https://cdn.discordapp.com/emojis/1038352151413530674.webp?size=96&quality=lossless"
 }
 
 var usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']

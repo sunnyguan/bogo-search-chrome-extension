@@ -49,6 +49,32 @@ function createElementFromHTML(htmlString) {
   return div.firstChild;
 }
 
+let timer = 0;
+
+function secToHMS(timer) {
+  let res = "";
+  // if (timer >= 3600) {
+  //   res += Math.floor(timer / 3600).toString().padStart(2, '0') + ":";
+  //   timer %= 3600;
+  // }
+  res += Math.floor(timer / 60).toString().padStart(2, '0') + ":";
+  timer %= 60;
+  res += timer.toString().padStart(2, '0');
+  return res;
+}
+
+let timeout = false;
+
+function renderTimer() {
+  if (timer > 0 && started) {
+    timer -= 1;
+    $('#timer').textContent = secToHMS(timer);
+    setTimeout(renderTimer, 1000);
+  } else {
+    timeout = false;
+  }
+}
+
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
       console.log(request);
@@ -85,9 +111,17 @@ chrome.runtime.onMessage.addListener(
         // room started
         if ('is_started' in request.data) {
           if (request.data.is_started)
-            startRoom();
+            startRoom(false);
           else
             started = false;
+        }
+
+        // timer
+        if ('timer' in request.data) {
+          timer = request.data.timer;
+          if (!timeout) {
+            timeout = setTimeout(renderTimer, 1000);
+          }
         }
       } else if (request.type === "message") {
         addMessage(request.data);
@@ -95,12 +129,11 @@ chrome.runtime.onMessage.addListener(
         $('#start-room').style.display = 'block';
         $('#restart-room').style.display = 'block';
       } else if (request.type === "start") {
-        startRoom();
+        startRoom(true);
       } else if (request.type === "error") {
         alert(request.data.message);
       } else if (request.type === "leaderboard") {
         const response = request.data;
-        console.log(request.data);
         let table = `
         <table id="scoreboard">
           <thead>
@@ -109,19 +142,20 @@ chrome.runtime.onMessage.addListener(
         `;
         for (const question of questions) {
           const color = difficulty_colors[question[2] - 1];
-          const text = started ? question[0] : "********";
+          const text = question[0];
           table += `<td><a href="${question[1]}" style="color: ${color}">${text}</a></td>`
         }
         table += '<td>Score</td></tr><tbody>'
         for (const ranking of response.rankings) {
           let row = `
-            <tr><td>${ranking[0]}</td>
-          `;
+          <tr><td>${ranking[0]}</td>
+        `;
           for (const status of response.question_status[ranking[0]]) {
             let show = "−";
-            if (status === 2) {
-              show = "✅";
-            } else if (status === 1) {
+            console.log(status);
+            if (status[0] === 2) {
+              show = `<span style="color:black">${secToHMS(Math.floor(status[1]))} ✅</span>`;
+            } else if (status[0] === 1) {
               show = "❌";
             }
             row += `<td>${show}</td>`
@@ -131,8 +165,8 @@ chrome.runtime.onMessage.addListener(
         }
 
         table += `
-          </tbody>
-        </table>`;
+        </tbody>
+      </table>`;
 
         const original = document.querySelector("#scoreboard");
         original.outerHTML = table;

@@ -2,7 +2,7 @@
 
 Add rooms to LeetCode, and code with friends! See https://github.com/lacjnhi/bogo-search (server side) for more information. 
 
-# Latest Version: 0.3
+# Latest Version: 0.4.1
 # Instructions:
 Prerequisites:
 1. If you have a new UI, make sure to "Revert to old version" by clicking on your profile icon, there should be an option to do so there.

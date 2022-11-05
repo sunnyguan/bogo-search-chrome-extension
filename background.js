@@ -1,6 +1,6 @@
 import './scripts/socket.io.2.js';
 
-let socket = io("http://54.145.184.126:5000/", {jsonp: false, transports: ['websocket'], upgrade: false});
+let socket = io("http://20.115.68.42:5001/", {jsonp: false, transports: ['websocket'], upgrade: false});
 console.log("Reconnected");
 console.log(socket.id);
 
@@ -8,8 +8,10 @@ function sendMsg(data) {
   console.log(data)
   chrome.tabs.query({url: "https://*.leetcode.com/*"}, function(tabs) {
     console.log(tabs);
-    chrome.tabs.sendMessage(tabs[0].id, data, function(response) {
-      console.log(response);
+    tabs.forEach(tab => {
+      chrome.tabs.sendMessage(tab.id, data, function (response) {
+        console.log(response);
+      });
     });
   });
 }
@@ -19,7 +21,7 @@ socket.on("disconnect", () => {
 });
 
 socket.on("connect", () => {
-  console.log("sending reconnect.....!!Ou13q3FJEFJ:WEFJOWEIJFOWEF)WEF*)(FJWEOFIJOWEIFJ");
+  console.log("sending reconnect.....");
   console.log(username);
   if (username !== "undefined")
     socket.emit("reconnect", {name: username});
@@ -42,7 +44,7 @@ socket.on("leaderboard", function(data) {
 
 socket.on("error", function(data) {
   console.log(data);
-  sendMsg({type: "message", data: data});
+  sendMsg({type: "error", data: data});
 });
 
 socket.on("new_owner", function(data) {
@@ -85,12 +87,12 @@ chrome.runtime.onConnect.addListener((port) => {
   })
 });
 
-const timeout = 60;
+const timeout = 10;
 
 let check = setInterval(() => {
-  // console.log("Checking")
-  if (Date.now() - lastMsgTime >= 1000 * timeout) {
-    socket.emit("leave_room");
+  let diff = Date.now() - lastMsgTime;
+  if (diff >= 1000 * timeout) {
+    socket.emit("leave_room", {name: username});
     clearInterval(check);
   }
 }, 1000);

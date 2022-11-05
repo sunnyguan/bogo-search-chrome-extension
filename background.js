@@ -90,9 +90,7 @@ chrome.runtime.onConnect.addListener((port) => {
 const timeout = 10;
 
 let check = setInterval(() => {
-  console.log("Checking")
   let diff = Date.now() - lastMsgTime;
-  console.log(diff);
   if (diff >= 1000 * timeout) {
     socket.emit("leave_room", {name: username});
     clearInterval(check);

@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "Bogosearch - LeetCode Rooms",
   "version": "0.4.1",
   "description": "Add rooms to LeetCode to compete solving problems with friends.",
@@ -12,8 +12,7 @@
     }
   ],
   "background": {
-    "service_worker": "background.js",
-    "type": "module"
+    "page": "background-page.html"
   },
   "permissions": [
     "tabs"

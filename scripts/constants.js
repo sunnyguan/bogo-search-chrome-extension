@@ -1,58 +1,152 @@
+const chatStyle =
+  "background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;";
+const adminStyle =
+  "color: darkblue; clear: both; padding-left: 8px; margin-bottom: 0;";
+const submitPassStyle =
+  "background-color: #009E60; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ";
+const submitWinStyle =
+  "background-color: hotpink; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ";
+const submitFailStyle =
+  "background-color: #e32636; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;";
 
-
-const chatStyle = 'background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;';
-const adminStyle = 'color: darkblue; clear: both; padding-left: 8px; margin-bottom: 0;';
-const submitPassStyle = 'background-color: #009E60; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ';
-const submitWinStyle = 'background-color: hotpink; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ';
-const submitFailStyle = 'background-color: #e32636; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;';
-
-const difficulty_colors = ['green', 'rgb(239, 108, 0)', 'red'];
+const difficulty_colors = ["green", "rgb(239, 108, 0)", "red"];
 
 const replacements = {
-  ":biggwiggle:": "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
-  ":bigwiggle:": "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
-  ":thonk:": "https://cdn.discordapp.com/emojis/539305279217598474.webp?size=96&quality=lossless",
-  ":wazowskistare:": "https://cdn.discordapp.com/emojis/752943231104188518.webp?size=96&quality=lossless",
-  ":blush:": "https://cdn.discordapp.com/emojis/807494943022120980.webp?size=96&quality=lossless",
-  ":flushdoggo:": "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
-  ":peeposhy:": "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless",
-  ":catyesnod:": "https://cdn.discordapp.com/emojis/771217244092104735.gif?size=96&quality=lossless",
-  ":this_tbh:": "https://cdn.discordapp.com/emojis/804408341815754812.webp?size=96&quality=lossless",
-  ":pepemoney:": "https://cdn.discordapp.com/emojis/933157489267048558.gif?size=96&quality=lossless",
-  ":prayge:": "https://cdn.discordapp.com/emojis/867052598446915605.webp?size=96&quality=lossless",
-  ":blobthx:": "https://cdn.discordapp.com/emojis/838079891978190859.webp?size=96&quality=lossless",
-  ":kek:": "https://cdn.discordapp.com/emojis/696881519498625056.webp?size=240&quality=lossless",
-  ":run:": "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
-  ":ez:": "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
-  ":pog:": "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless",
-  ":sunny:": "https://cdn.discordapp.com/emojis/1038352130416848996.webp?size=96&quality=lossless",
-  ":sunnyy:": "https://cdn.discordapp.com/emojis/1038352151413530674.webp?size=96&quality=lossless"
-}
+  ":biggwiggle:":
+    "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
+  ":bigwiggle:":
+    "https://cdn.discordapp.com/emojis/1022965811498979378.gif?size=96&quality=lossless",
+  ":thonk:":
+    "https://cdn.discordapp.com/emojis/539305279217598474.webp?size=96&quality=lossless",
+  ":wazowskistare:":
+    "https://cdn.discordapp.com/emojis/752943231104188518.webp?size=96&quality=lossless",
+  ":blush:":
+    "https://cdn.discordapp.com/emojis/807494943022120980.webp?size=96&quality=lossless",
+  ":flushdoggo:":
+    "https://cdn.discordapp.com/emojis/810005130299572264.webp?size=96&quality=lossless",
+  ":peeposhy:":
+    "https://cdn.discordapp.com/emojis/734089702638092359.gif?size=96&quality=lossless",
+  ":catyesnod:":
+    "https://cdn.discordapp.com/emojis/771217244092104735.gif?size=96&quality=lossless",
+  ":this_tbh:":
+    "https://cdn.discordapp.com/emojis/804408341815754812.webp?size=96&quality=lossless",
+  ":pepemoney:":
+    "https://cdn.discordapp.com/emojis/933157489267048558.gif?size=96&quality=lossless",
+  ":prayge:":
+    "https://cdn.discordapp.com/emojis/867052598446915605.webp?size=96&quality=lossless",
+  ":blobthx:":
+    "https://cdn.discordapp.com/emojis/838079891978190859.webp?size=96&quality=lossless",
+  ":kek:":
+    "https://cdn.discordapp.com/emojis/696881519498625056.webp?size=240&quality=lossless",
+  ":run:":
+    "https://cdn.discordapp.com/emojis/656719083793809408.gif?size=240&quality=lossless",
+  ":ez:":
+    "https://cdn.discordapp.com/emojis/914000665875984385.webp?size=240&quality=lossless",
+  ":pog:":
+    "https://cdn.discordapp.com/emojis/620029063276265472.webp?size=240&quality=lossless",
+  ":sunny:":
+    "https://cdn.discordapp.com/emojis/1038352130416848996.webp?size=96&quality=lossless",
+  ":sunnyy:":
+    "https://cdn.discordapp.com/emojis/1038352151413530674.webp?size=96&quality=lossless",
+};
 
-const usStates = ['Array', 'Backtracking', 'Biconnected Component', 'Binary Indexed Tree', 'Binary Search', 'Binary Search Tree', 'Binary Tree', 'Bit Manipulation', 'Bitmask', 'Brainteaser', 'Breadth-First Search', 'Bucket Sort', 'Combinatorics', 'Concurrency', 'Counting', 'Counting Sort', 'Data Stream', 'Database', 'Depth-First Search', 'Design', 'Divide and Conquer', 'Doubly-Linked List', 'Dynamic Programming', 'Enumeration', 'Eulerian Circuit', 'Game Theory', 'Geometry', 'Graph', 'Greedy', 'Hash Function', 'Hash Table', 'Heap (Priority Queue)', 'Interactive', 'Iterator', 'Line Sweep', 'Linked List', 'Math', 'Matrix', 'Memoization', 'Merge Sort', 'Minimum Spanning Tree', 'Monotonic Queue', 'Monotonic Stack', 'Number Theory', 'Ordered Set', 'Prefix Sum', 'Probability and Statistics', 'Queue', 'Quickselect', 'Radix Sort', 'Randomized', 'Recursion', 'Rejection Sampling', 'Reservoir Sampling', 'Rolling Hash', 'Segment Tree', 'Shell', 'Shortest Path', 'Simulation', 'Sliding Window', 'Sorting', 'Stack', 'String', 'String Matching', 'Strongly Connected Component', 'Suffix Array', 'Topological Sort', 'Tree', 'Trie', 'Two Pointers', 'Union Find']
+const usStates = [
+  "Array",
+  "Backtracking",
+  "Biconnected Component",
+  "Binary Indexed Tree",
+  "Binary Search",
+  "Binary Search Tree",
+  "Binary Tree",
+  "Bit Manipulation",
+  "Bitmask",
+  "Brainteaser",
+  "Breadth-First Search",
+  "Bucket Sort",
+  "Combinatorics",
+  "Concurrency",
+  "Counting",
+  "Counting Sort",
+  "Data Stream",
+  "Database",
+  "Depth-First Search",
+  "Design",
+  "Divide and Conquer",
+  "Doubly-Linked List",
+  "Dynamic Programming",
+  "Enumeration",
+  "Eulerian Circuit",
+  "Game Theory",
+  "Geometry",
+  "Graph",
+  "Greedy",
+  "Hash Function",
+  "Hash Table",
+  "Heap (Priority Queue)",
+  "Interactive",
+  "Iterator",
+  "Line Sweep",
+  "Linked List",
+  "Math",
+  "Matrix",
+  "Memoization",
+  "Merge Sort",
+  "Minimum Spanning Tree",
+  "Monotonic Queue",
+  "Monotonic Stack",
+  "Number Theory",
+  "Ordered Set",
+  "Prefix Sum",
+  "Probability and Statistics",
+  "Queue",
+  "Quickselect",
+  "Radix Sort",
+  "Randomized",
+  "Recursion",
+  "Rejection Sampling",
+  "Reservoir Sampling",
+  "Rolling Hash",
+  "Segment Tree",
+  "Shell",
+  "Shortest Path",
+  "Simulation",
+  "Sliding Window",
+  "Sorting",
+  "Stack",
+  "String",
+  "String Matching",
+  "Strongly Connected Component",
+  "Suffix Array",
+  "Topological Sort",
+  "Tree",
+  "Trie",
+  "Two Pointers",
+  "Union Find",
+];
 
 const uiStyles = {
   sidebar: {
     old: ".container__14Na",
-    new: "#qd-content"
+    new: "#qd-content",
   },
   waitFor: {
     old: ".btns__1OeZ",
-    new: "div.ssg__qd-splitter-primary-h"
+    new: "div.ssg__qd-splitter-primary-h",
   },
   prevNext: {
-    old: '.css-v3d350',
-    new: "#qd-content > div.h-full.flex-col.ssg__qd-splitter-primary-w > div > div > div > div.flex.h-full.w-full.overflow-y-auto > div > div > div.w-full.px-5.pt-4 > div > div:nth-child(1) > div.flex-1 > div > div > span"
+    old: ".css-v3d350",
+    new: "#qd-content > div.h-full.flex-col.ssg__qd-splitter-primary-w > div > div > div > div.flex.h-full.w-full.overflow-y-auto > div > div > div.w-full.px-5.pt-4 > div > div:nth-child(1) > div.flex-1 > div > div > span",
   },
   details: {
-    old: '.detail__1Ye5',
-    new: "#qd-content > div.h-full.flex-col.ssg__qd-splitter-secondary-w > div > div.min-h-0.flex-grow.ssg__qd-splitter-primary-h > div > div.flex.h-full.w-full.flex-col.overflow-hidden > div.bg-layer-1.dark\\:bg-dark-layer-1.flex.h-full.w-full.flex-col.overflow-auto.p-5 > div.mb-4.flex.w-full.items-start.justify-between > div.flex.items-center.gap-4 > a"
-  }
-}
+    old: ".detail__1Ye5",
+    new: "#qd-content > div.h-full.flex-col.ssg__qd-splitter-secondary-w > div > div.min-h-0.flex-grow.ssg__qd-splitter-primary-h > div > div.flex.h-full.w-full.flex-col.overflow-hidden > div.bg-layer-1.dark\\:bg-dark-layer-1.flex.h-full.w-full.flex-col.overflow-auto.p-5 > div.mb-4.flex.w-full.items-start.justify-between > div.flex.items-center.gap-4 > a",
+  },
+};
 
-const removeDivider = "#qd-content > div.h-full.flex-col.ssg__qd-splitter-primary-w > div > div > div > div.flex.h-full.w-full.overflow-y-auto > div > div > div.w-full.px-5.pt-4 > div > div:nth-child(1) > div.flex-1 > div > div > div"
+const removeDivider =
+  "#qd-content > div.h-full.flex-col.ssg__qd-splitter-primary-w > div > div > div > div.flex.h-full.w-full.overflow-y-auto > div > div > div.w-full.px-5.pt-4 > div > div:nth-child(1) > div.flex-1 > div > div > div";
 
-const mentionStyle = '20px solid #f3c339';
+const mentionStyle = "20px solid #f3c339";
 
 const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
 
@@ -416,4 +510,4 @@ border-bottom: 2px solid lightgray;">
 </div>
 </div>
     </div>
-</div>`
+</div>`;

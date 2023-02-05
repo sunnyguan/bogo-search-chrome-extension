@@ -5,10 +5,34 @@ function waitForElm(selector) {
       return resolve(document.querySelector(selector));
     }
 
-    const observer = new MutationObserver(mutations => {
+    const observer = new MutationObserver(_ => {
       if (document.querySelector(selector)) {
         resolve(document.querySelector(selector));
         observer.disconnect();
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  });
+}
+
+function waitForAny(selectors) {
+  return new Promise(resolve => {
+    for (const version in selectors) {
+      if (document.querySelector(selectors[version])) {
+        return resolve(version);
+      }
+    }
+
+    const observer = new MutationObserver(_ => {
+      for (const version in selectors) {
+        if (document.querySelector(selectors[version])) {
+          resolve(version);
+          observer.disconnect();
+        }
       }
     });
 

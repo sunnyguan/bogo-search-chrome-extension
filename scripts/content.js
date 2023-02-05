@@ -205,16 +205,23 @@ function changeQuestions(event) {
 }
 
 function makePrevNextButton() {
-  const question_name = $('.css-v3d350').textContent;
-   $('.css-v3d350').innerHTML = `
+  const element = $(uiStyles['prevNext'][uiVersion]);
+  if (element === null) return;
+  const question_name = element.textContent;
+  element.innerHTML = `
 <div style="
     flex-grow: 1;
 ">${question_name}</div><div style="
     display: flex;
 ">
-<button id="question-prev" class="rooms" style="margin-right: 10px"></button>
+<button id="question-prev" class="rooms" style="margin-right: 10px; margin-left: 10px;"></button>
 <button id="question-next" class="rooms" style=""></button></div>`;
-  $('.css-v3d350').style.display = 'flex';
+  element.style.display = 'flex';
+  $("#question-prev").addEventListener('click', prevQuestion);
+  $("#question-next").addEventListener('click', nextQuestion);
+  if (uiVersion === 'new') {
+    $(removeDivider).style.display = 'none';
+  }
 }
 
 
@@ -235,10 +242,14 @@ function fetchUsername() {
   })
 }
 
-function myMain(e) {
+let uiVersion = 'old';
+
+function myMain(ver) {
   $ = document.querySelector.bind(document);
 
-  const parent = $(".container__14Na");
+  uiVersion = ver;
+
+  const parent = $(uiStyles['sidebar'][uiVersion]);
 
   const dividerEl = createElementFromHTML(divider);
   parent.appendChild(dividerEl);
@@ -264,8 +275,6 @@ function myMain(e) {
   $("#chatbox").addEventListener('keypress', inputEnterMsg);
 
   makePrevNextButton();
-  $("#question-prev").addEventListener('click', prevQuestion);
-  $("#question-next").addEventListener('click', nextQuestion);
 
   window.onclick = function (event) {
     if (event.target.id === "leaderboard-modal") {
@@ -393,12 +402,14 @@ function myMain(e) {
       }
     });
   })
+
+  waitForElm(uiStyles['details'][uiVersion]).then((res) => {submitted(res)});
 }
 
 function submitted(e) {
-  var href = $(".detail__1Ye5").getAttribute('href');
-  var check = href + "check";
-  fetch(check).then(res => res.json()).then(data => {
+  const href = $(uiStyles['details'][uiVersion]).getAttribute('href');
+  const apiCall = `/submissions/detail/${href.split("submissionId=")[1]}/check`;
+  fetch(apiCall).then(res => res.json()).then(data => {
     const curr_id = currentQuestionId();
     if (started) {
       chrome.runtime.sendMessage({type: "submission", data: {
@@ -411,12 +422,10 @@ function submitted(e) {
       });
     }
   })
-  waitForElmChange(".detail__1Ye5", href).then(res => {submitted(res)});
+  waitForElmChange(uiStyles['details'][uiVersion], href).then(res => {submitted(res)});
 }
 
-waitForElm('.btns__1OeZ').then((res) => {myMain(res)});
-
-waitForElm(".detail__1Ye5").then((res) => {submitted(res)});
+waitForAny(uiStyles['waitFor']).then((res) => {myMain(res)});
 
 // keep-alive
 setInterval(() => {

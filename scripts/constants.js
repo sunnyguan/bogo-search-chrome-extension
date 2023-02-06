@@ -152,7 +152,7 @@ const divider = `<div style="width: 10px;height: 100%"></div>`;
 
 const sidebar = `
 <div class="bg-layer-bg dark:bg-dark-layer-bg" 
-     style="overflow-y: scroll; display: flex;flex-direction: column; max-width:30%;min-width: 15%;">
+     style="overflow-y: scroll; display: flex;flex-direction: column;">
     <div style="min-height: 44px; padding-right: 5px; display:flex; align-items: center;" 
     class="css-v3d350">
     <span style="flex-grow: 1" id="room-name">Rooms</span>

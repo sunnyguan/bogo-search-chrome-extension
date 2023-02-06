@@ -269,6 +269,7 @@ function myMain(ver) {
 
   const parent = $(uiStyles["sidebar"][uiVersion]);
 
+
   const dividerEl = createElementFromHTML(divider);
   parent.appendChild(dividerEl);
 
@@ -440,6 +441,12 @@ function myMain(ver) {
       }
     );
   });
+
+  if (uiVersion === 'new') {
+    $('.ssg__qd-splitter-primary-w').style.width = 'calc(25% - 4px)';
+    $('.ssg__qd-splitter-secondary-w').style.width = 'calc(50% - 4px)';
+    side.style.width = 'calc(25% - 4px)';
+  }
 
   waitForElm(uiStyles["details"][uiVersion]).then((res) => {
     submitted(res);

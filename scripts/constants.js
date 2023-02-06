@@ -1,7 +1,7 @@
 const chatStyle =
   "background-color: #5da3f5; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0;";
 const adminStyle =
-  "color: darkblue; clear: both; padding-left: 8px; margin-bottom: 0;";
+  "clear: both; padding-left: 8px; margin-bottom: 0;";
 const submitPassStyle =
   "background-color: #009E60; color: white; padding: 4px 8px;border-radius: 0.75rem; clear: both; float: left; margin-bottom: 0; ";
 const submitWinStyle =
@@ -148,26 +148,30 @@ const removeDivider =
 
 const mentionStyle = "20px solid #f3c339";
 
-const divider = `<div style="width: 10px;background-color: #eeeeee;height: 100%"></div>`;
+const divider = `<div style="width: 10px;height: 100%"></div>`;
 
 const sidebar = `
-<div style="overflow-y: scroll; display: flex;flex-direction: column; max-width:30%;min-width: 15%;background-color: #fafafa;">
-    <div style="background: rgb(250, 250, 250); margin: 20px 20px 0 20px; padding-bottom: 10px; border-bottom: 1px solid lightgray" class="css-v3d350"><span id="room-name">Rooms</span><span style="float: right">⏰<span id="timer" style="margin-left: 8px;"></span></span></div>
+<div class="bg-layer-bg dark:bg-dark-layer-bg" 
+     style="overflow-y: scroll; display: flex;flex-direction: column; max-width:30%;min-width: 15%;">
+    <div style="min-height: 44px; padding-right: 5px; display:flex; align-items: center;" 
+    class="css-v3d350">
+    <span style="flex-grow: 1" id="room-name">Rooms</span>
+    <span >⏰<span id="timer" style="margin-left: 8px;"></span></span></div>
     <div style="
     padding: 20px;
     display: flex;
     flex-direction: column;
     height: fit-content;
     flex-grow: 1;
-">
+" class="bg-layer-1 dark:bg-dark-layer-1">
 <style>
 button.join-create-room {
-    background: rgb(93, 163, 245);
+    /*background: rgb(93, 163, 245);*/
     border: 2px solid rgb(93, 163, 245);
     border-radius: 0.5rem;
-    color: white;
+    /*color: white;*/
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 500;
     margin: auto;
     padding: 6px;
 }
@@ -175,11 +179,10 @@ button.join-create-room:hover {
     border: 2px solid blue;
 }
 button.join-create-room:active {
-    background: dodgerblue;
+    /* background: dodgerblue; */
 }
 #leave-room {
     border: 2px solid salmon;
-    background: lightsalmon;
     padding: 4px;
 }
 #leave-room:hover {
@@ -269,7 +272,7 @@ button.join-create-room:active {
 .dropdown-button {
   float: left;
   width: 100%;
-  background: whitesmoke;
+  /*background: whitesmoke;*/
   padding: 5px 10px;
   text-align: center;
   cursor: pointer;
@@ -314,11 +317,12 @@ button.join-create-room:active {
 button.rooms {
   width: 30px;
   height: 30px;
-  background-color: #fff;
   border-radius: 24px;
   border: 2px solid #f2af29;
   transition: all 0.3s ease;
   cursor: pointer;
+  margin: 8px;
+  
 }
 button.rooms::after {
   content: "←";
@@ -396,7 +400,7 @@ border-bottom: 2px solid lightgray;">
         <div class="dropdown-quantity">(<span id="quantity-1" class="quantity">All</span>)</div>
         <i class="fa fa-filter"></i>
     </div>
-    <div class="dropdown-list" id="dropdown-list-1" style="display: none; position: absolute; background: white; width: 200px; margin-top: 43px;">
+    <div class="dropdown-list dark:bg-dark-layer-1 bg-white" id="dropdown-list-1" style="display: none; position: absolute; width: 200px; margin-top: 43px;">
         <input type="search" placeholder="Search Topics" id="dropdown-search-1" class="dropdown-search input-box" style="border-color: lightgray;width: 100%;text-align: center;">
         <ul id="topic-select" style="
     padding: 14px 0 0 0;
@@ -412,7 +416,8 @@ border-bottom: 2px solid lightgray;">
     margin: 5px 0 10px 0;
     border-radius: 1rem;
     padding: 5px;
-    background: whitesmoke;
+    border: 1px solid gray;
+    /*background: whitesmoke;*/
     text-align: center;
     
 ">
@@ -432,7 +437,7 @@ border-bottom: 2px solid lightgray;">
         <div class="dropdown-quantity">(<span id="quantity-2" class="quantity">Any</span>)</div>
         <i class="fa fa-filter"></i>
     </div>
-    <div id="dropdown-list-2" class="dropdown-list" style="display: none; position: absolute; background: white; width: 200px; margin-top: 43px;">
+    <div id="dropdown-list-2" class="dropdown-list dark:bg-dark-layer-1 bg-white" style="display: none; position: absolute; width: 200px; margin-top: 43px;">
         <input type="search" placeholder="Search Questions" id="dropdown-search-2" class="dropdown-search input-box" style="border-color: lightgray;width: 100%;text-align: center;">
         <ul id="question-select" style="
     padding: 14px 0 0 0;
@@ -452,14 +457,15 @@ border-bottom: 2px solid lightgray;">
 </div>
 <div id="chat-leave" style="display: none; height: 100%; flex-direction: column;">
 
-<div style="display: flex;margin-bottom: 10px;">
+
+<div style="display: flex;">
 <div id="room-size" style="margin: auto; flex-grow: 1">
 </div>
 <button id="leaderboard" class="join-create-room" style="padding: 5px">Leaderboard</button>
 <div id="leaderboard-modal" class="modal">
 
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content dark:bg-dark-layer-1">
     <span id="close-leaderboard">×</span>
     <h3 style="
     width: 100%;
@@ -475,10 +481,18 @@ border-bottom: 2px solid lightgray;">
 </div>
 
 </div>
+<div style="
+    display: flex;
+    width: 100%;
+">
+  <button id="question-prev" class="rooms" style="flex-grow: 1"></button>
+  <button id="question-next" class="rooms" style="flex-grow: 1"></button>
+</div>
+
 
 <div id="questions">
 </div>
-<div id="chat-container" style="flex-grow: 1;border-radius: 1rem;background: #eeeeee;display: flex;flex-direction: column;"><div id="chats" style="
+<div id="chat-container" class="bg-layer-1 dark:bg-dark-layer-2" style="flex-grow: 1;border-radius: 1rem;display: flex;flex-direction: column;"><div id="chats" style="
     flex-grow: 1;
     height: 0;
     overflow-y: scroll;
@@ -489,9 +503,11 @@ border-bottom: 2px solid lightgray;">
 <div style="
     display: flex;
     margin-top: 10px;
-    margin-bottom: 20px;
-"><input type="text" placeholder="Enter message here" id="chatbox" class="input-box">
-</div><div style="display: flex;">
+"><input type="text" placeholder="Enter message here" id="chatbox" class="input-box" style="padding-left: 8px;">
+</div>
+
+
+<div style="display: flex;">
 <button id="start-room" class="join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1; margin-right: 10px; display: none;
 ">
@@ -502,7 +518,7 @@ border-bottom: 2px solid lightgray;">
 ">
           Stop Room
   </button>
-  <button id="leave-room" class="join-create-room" data-no-border="true" icon="information" style="
+  <button id="leave-room" class="dark:text-white join-create-room" data-no-border="true" icon="information" style="
     flex-grow: 1;
 ">
           Leave Room

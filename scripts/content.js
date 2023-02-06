@@ -197,11 +197,11 @@ function addMessage(data) {
       newChat.style.borderLeft = mentionStyle;
     }
   } else if (type === "admin") {
-    newChat = createElementFromHTML(`<p style='${adminStyle}'></p>`);
+    newChat = createElementFromHTML(`<p class="dark:text-dark-blue" style='${adminStyle}'></p>`);
     newChat.textContent = message;
   } else if (type === "start") {
     // TODO
-    newChat = createElementFromHTML(`<p style='${adminStyle}'></p>`);
+    newChat = createElementFromHTML(`<p class="dark:text-dark-blue" style='${adminStyle}'></p>`);
     newChat.textContent = message;
   }
   newChat.innerHTML = emojifyMessage(newChat.innerHTML);
@@ -239,26 +239,6 @@ function changeQuestions(event) {
   else if (id[0] === "m") addIfPossible(1, delta);
   else if (id[0] === "h") addIfPossible(2, delta);
   renderDifficulties();
-}
-
-function makePrevNextButton() {
-  const element = $(uiStyles["prevNext"][uiVersion]);
-  if (element === null) return;
-  const question_name = element.textContent;
-  element.innerHTML = `
-<div style="
-    flex-grow: 1;
-">${question_name}</div><div style="
-    display: flex;
-">
-<button id="question-prev" class="rooms" style="margin-right: 10px; margin-left: 10px;"></button>
-<button id="question-next" class="rooms" style=""></button></div>`;
-  element.style.display = "flex";
-  $("#question-prev").addEventListener("click", prevQuestion);
-  $("#question-next").addEventListener("click", nextQuestion);
-  if (uiVersion === "new") {
-    $(removeDivider).style.display = "none";
-  }
 }
 
 // JSON of States for demo purposes
@@ -312,7 +292,8 @@ function myMain(ver) {
 
   $("#chatbox").addEventListener("keypress", inputEnterMsg);
 
-  makePrevNextButton();
+  $("#question-prev").addEventListener("click", prevQuestion);
+  $("#question-next").addEventListener("click", nextQuestion);
 
   window.onclick = function (event) {
     if (event.target.id === "leaderboard-modal") {
@@ -467,7 +448,10 @@ function myMain(ver) {
 
 function submitted(e) {
   const href = $(uiStyles["details"][uiVersion]).getAttribute("href");
-  const apiCall = `/submissions/detail/${href.split("submissionId=")[1]}/check`;
+  let apiCall = href + 'check';
+  if (uiVersion === 'new') {
+    apiCall = `/submissions/detail/${href.split("submissionId=")[1]}/check`;
+  }
   fetch(apiCall)
     .then((res) => res.json())
     .then((data) => {

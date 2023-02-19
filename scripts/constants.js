@@ -131,7 +131,7 @@ const uiStyles = {
   },
   waitFor: {
     old: ".btns__1OeZ",
-    new: "div.ssg__qd-splitter-primary-h",
+    new: "#qd-content",
   },
   prevNext: {
     old: ".css-v3d350",

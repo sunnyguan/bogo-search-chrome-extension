@@ -139,7 +139,7 @@ const uiStyles = {
   },
   details: {
     old: ".detail__1Ye5",
-    new: "#qd-content > div.h-full.flex-col.ssg__qd-splitter-secondary-w > div > div.min-h-0.flex-grow.ssg__qd-splitter-primary-h > div > div.flex.h-full.w-full.flex-col.overflow-hidden > div.bg-layer-1.dark\\:bg-dark-layer-1.flex.h-full.w-full.flex-col.overflow-auto.p-5 > div.mb-4.flex.w-full.items-start.justify-between > div.flex.items-center.gap-4 > a",
+    new: "#qd-content > div > div > div > div > div > div > div > div.flex.items-center.gap-4 > a",
   },
 };
 
